@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Farmear Aura — V0.8 Cuerpo Entero y Manos en Movimiento</title>
+<title>Farmear Aura — V0.9 Manos Reales</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -61,8 +61,8 @@ body.awakened { animation: pulseBg .8s infinite alternate; }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  font-size: 28px;
+  gap: 6px;
+  font-size: 26px;
 }
 .puppet-legs { font-size: 26px; margin-top: -2px; }
 
@@ -73,7 +73,7 @@ body.awakened { animation: pulseBg .8s infinite alternate; }
   font-weight: bold;
 }
 
-/* Secuencias de animación dinámicas para manos y cuerpo */
+/* Secuencias de animación dinámicas */
 .puppet.anim-flex { animation: flexSeq 0.3s ease; }
 .puppet.anim-hype { animation: hypeSeq 0.35s ease; }
 .puppet.anim-power { animation: powerSeq 0.25s ease; }
@@ -134,7 +134,7 @@ body.awakened { animation: pulseBg .8s infinite alternate; }
 </head>
 <body class="zone-Escuela">
 <div class="game">
-<div class="top"><h1>🔥 FARMEAR AURA</h1><div class="sub">V0.8 — Cuerpo Entero con Manos en Movimiento 😎</div></div>
+<div class="top"><h1>🔥 FARMEAR AURA</h1><div class="sub">V0.9 — Manos Reales 😎</div></div>
 
 <div class="card">
 <div class="aura" id="aura">0</div><div class="rank" id="rank">NPC</div>
@@ -143,12 +143,12 @@ body.awakened { animation: pulseBg .8s infinite alternate; }
 <!-- Botón limpio -->
 <button class="farm" id="farm">FARMEAR<br>AURA</button>
 
-<!-- Monigote de Cuerpo Entero Dinámico -->
+<!-- Monigote de Cuerpo Entero con Manos Reales -->
 <div class="character-stage">
   <div class="puppet" id="puppetBox">
     <div class="puppet-head" id="pHead">🧑</div>
     <div class="puppet-torso">
-      <span id="pLeftHand">🧥</span><span id="pBody">👕</span><span id="pRightHand">🧥</span>
+      <span id="pLeftHand">✋</span><span id="pBody">👕</span><span id="pRightHand">🤚</span>
     </div>
     <div class="puppet-legs">👖</div>
   </div>
@@ -230,20 +230,20 @@ const zoneBosses={
   Dimension:{name:"Sombra Cósmica",hp:100000}
 };
 const charConfigs={
-  NPC:{head:"🧑",leftHand:"💧",body:"👕",rightHand:"💧",name:"NPC en la plaza"},
-  Sigma:{head:"😎",leftHand:"🔥",body:"🧥",rightHand:"🔥",name:"Sigma Male grindset"},
+  NPC:{head:"🧑",leftHand:"✋",body:"👕",rightHand:"🤚",name:"NPC en la plaza"},
+  Sigma:{head:"😎",leftHand:"👍",body:"🧥",rightHand:"🔥",name:"Sigma Male grindset"},
   Chad:{head:"🗿",leftHand:"💪",body:"🎽",rightHand:"💪",name:"Gigachad indiscutido"},
   Master:{head:"👑",leftHand:"✨",body:"👘",rightHand:"✨",name:"Aura Master supremo"}
 };
 
-const state=JSON.parse(localStorage.getItem("farmear_v08")||localStorage.getItem("farmear_v07")||localStorage.getItem("farmear_v06")||"{}");
+const state=JSON.parse(localStorage.getItem("farmear_v09")||localStorage.getItem("farmear_v08")||localStorage.getItem("farmear_v07")||"{}");
 let aura=state.aura||0,power=state.power||0,bot=state.bot||0,prestige=state.prestige||0;
 let presence=state.presence||0, character=state.character||"NPC", zone=state.zone||"Escuela", bossHp=state.bossHp??100;
 let awakenedTimer=0;
 
 const $=id=>document.getElementById(id);
 const fmt=n=>Math.floor(n).toLocaleString("es-AR");
-function save(){localStorage.setItem("farmear_v08",JSON.stringify({aura,power,bot,prestige,presence,character,zone,bossHp}));}
+function save(){localStorage.setItem("farmear_v09",JSON.stringify({aura,power,bot,prestige,presence,character,zone,bossHp}));}
 function rank(){let r=ranks[0];for(const x of ranks)if(aura>=x.need)r=x;return r}
 function next(){return ranks.find(x=>x.need>aura)}
 function prestigeMultiplier(){return 1+prestige*.5}
@@ -303,7 +303,6 @@ function checkAwakening(){
   }
 }
 
-// Secuencias de movimiento para el cuerpo entero y las manos
 const puppetAnims = ["anim-flex", "anim-hype", "anim-power"];
 function triggerPuppetAnimation(){
   const puppet = $("puppetBox");
@@ -380,7 +379,7 @@ $("bossHit").onclick=()=>{
   render();
 };
 
-$("reset").onclick=()=>{if(confirm("¿Borrar todo el progreso de la partida?")){['v04','v05','v06','v07','v08'].forEach(v=>localStorage.removeItem("farmear_"+v));location.reload()}};
+$("reset").onclick=()=>{if(confirm("¿Borrar todo el progreso de la partida?")){['v04','v05','v06','v07','v08','v09'].forEach(v=>localStorage.removeItem("farmear_"+v));location.reload()}};
 
 setInterval(()=>{
   if(bot){aura+=botPower();render()}
@@ -391,8 +390,9 @@ setInterval(()=>{
   }
 },1000);
 
-log("🔥 V0.8 Cuerpo Entero iniciada.");
+log("🔥 V0.9 Manos Reales iniciada.");
 render();
 </script>
 </body>
-</html>
+                                                                                             </html>
+                                                                                             
