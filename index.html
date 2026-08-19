@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Farmear Aura — V0.4 Base Oficial</title>
+<title>Farmear Aura — V0.5 La Batalla por el Aura</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -15,6 +15,15 @@ body.zone-Escuela { background: radial-gradient(circle at top,#1e293b,#0f172a 48
 body.zone-Ciudad { background: radial-gradient(circle at top,#1b263b,#0d1b2a 48%,#0b090a); }
 body.zone-Noche { background: radial-gradient(circle at top,#3a0ca3,#10002b 48%,#05010d); }
 body.zone-Dimension { background: radial-gradient(circle at top,#7209b7,#3a0ca3 48%,#10002b); }
+
+/* Modo Despertar Activo */
+body.awakened {
+  animation: pulseBg .8s infinite alternate;
+}
+@keyframes pulseBg {
+  0% { filter: brightness(1); }
+  100% { filter: brightness(1.3) hue-rotate(15deg); }
+}
 
 .game{max-width:540px;margin:auto;padding:16px}
 .top{text-align:center}h1{font-size:34px;margin:5px 0;letter-spacing:1px}
@@ -68,7 +77,7 @@ body.zone-Dimension { background: radial-gradient(circle at top,#7209b7,#3a0ca3 
 </head>
 <body class="zone-Escuela">
 <div class="game">
-<div class="top"><h1>🔥 FARMEAR AURA</h1><div class="sub">El objetivo final no es el Aura. Es demostrar tu Presencia. 😎</div></div>
+<div class="top"><h1>🔥 FARMEAR AURA</h1><div class="sub">V0.5 — La Batalla por el Aura 😎</div></div>
 
 <div class="card">
 <div class="aura" id="aura">0</div><div class="rank" id="rank">NPC</div>
@@ -100,7 +109,7 @@ body.zone-Dimension { background: radial-gradient(circle at top,#7209b7,#3a0ca3 
 </div>
 
 <div id="prestige" class="panel">
-<p>Al llegar a <b>1.000.000 Aura</b> podés trascender de plano.</p>
+<p>Al llegar a <b>1.000.000 Aura</b> podés trascender de plano y desbloquear ventajas.</p>
 <p>⭐ Prestigios: <b id="prestigeLv">0</b><br>⚡ Multiplicador permanente: <b id="prestigeMult">x1</b></p>
 <button class="buy" id="prestigeBtn">TRASCENDER</button>
 </div>
@@ -127,8 +136,8 @@ body.zone-Dimension { background: radial-gradient(circle at top,#7209b7,#3a0ca3 
 </div>
 
 <div class="card boss">
-  <h3>👹 JEFE DE ZONA: NPC SUPREMO</h3>
-  <div>Resistencia: <b id="bossHp">100</b>/100</div>
+  <h3>👹 JEFE: <span id="bossName">NPC SUPREMO</span></h3>
+  <div>Resistencia: <b id="bossHp">100</b>/<span id="bossMaxHp">100</span></div>
   <div class="notice" id="bossMsg">Atacá con tu Aura para dominar el escenario.</div>
   <button class="buy" id="bossHit">ATACAR JEFE</button>
 </div>
@@ -142,28 +151,37 @@ const ranks=[
 {name:"Chad",need:10000},{name:"Leyenda",need:100000},{name:"Dios del Aura",need:1000000},
 {name:"Entidad Cósmica",need:10000000}
 ];
-const state=JSON.parse(localStorage.getItem("farmear_v04")||localStorage.getItem("farmear_v03")||"{}");
+const zoneBosses={
+  Escuela:{name:"Celador NPC",hp:100},
+  Ciudad:{name:"Inspector de Estilo",hp:1000},
+  Noche:{name:"Rey del Cringe",hp:10000},
+  Dimension:{name:"Sombra Cósmica",hp:100000}
+};
+
+const state=JSON.parse(localStorage.getItem("farmear_v05")||localStorage.getItem("farmear_v04")||localStorage.getItem("farmear_v03")||"{}");
 let aura=state.aura||0,power=state.power||0,bot=state.bot||0,prestige=state.prestige||0;
 let presence=state.presence||0, character=state.character||"NPC", zone=state.zone||"Escuela", bossHp=state.bossHp??100;
+let awakenedTimer=0;
 
 const $=id=>document.getElementById(id);
 const fmt=n=>Math.floor(n).toLocaleString("es-AR");
-function save(){localStorage.setItem("farmear_v04",JSON.stringify({aura,power,bot,prestige,presence,character,zone,bossHp}));}
+function save(){localStorage.setItem("farmear_v05",JSON.stringify({aura,power,bot,prestige,presence,character,zone,bossHp}));}
 function rank(){let r=ranks[0];for(const x of ranks)if(aura>=x.need)r=x;return r}
 function next(){return ranks.find(x=>x.need>aura)}
 function prestigeMultiplier(){return 1+prestige*.5}
 function charMult(){return character==="Sigma"?1.1:character==="Chad"?1.25:character==="Master"?1.5:1}
-function clickPower(){return (1+power)*prestigeMultiplier()*charMult()}
+function awakenMult(){return awakenedTimer>0?5:1}
+function clickPower(){return (1+power)*prestigeMultiplier()*charMult()*awakenMult()}
 function botPower(){return bot*prestigeMultiplier()}
 function powerCost(){return Math.floor(100*Math.pow(2.4,power))}
 function botCost(){return Math.floor(250*Math.pow(2.7,bot))}
 
 function updateZoneTheme(){
-  document.body.className = "zone-" + zone;
+  document.body.className = "zone-" + zone + (awakenedTimer>0?" awakened":"");
 }
 
 function render(){
- const r=rank(),n=next();
+ const r=rank(),n=next(), bInfo=zoneBosses[zone];
  $("aura").textContent=fmt(aura);$("rank").textContent=r.name;
  $("perClick").textContent="+"+fmt(clickPower());$("auto").textContent=fmt(botPower())+"/s";
  if(n){$("fill").style.width=Math.min(100,(aura-r.need)/(n.need-r.need)*100)+"%";$("progress").textContent=fmt(aura)+" / "+fmt(n.need)+" Aura"}
@@ -172,9 +190,18 @@ function render(){
  $("buyPower").textContent=fmt(powerCost())+" Aura";$("buyPower").disabled=aura<powerCost();
  $("buyBot").textContent=fmt(botCost())+" Aura";$("buyBot").disabled=aura<botCost();
  $("prestigeBtn").disabled=aura<1000000;
+ 
  $("presence").textContent=Math.floor(presence);$("presfill").style.width=Math.min(100,presence)+"%";
- $("presenceMsg").textContent=presence<25?"Tu presencia todavía es de NPC.":presence<60?"😎 Se empieza a notar tu presencia.":presence<90?"🔥 Tenés presencia fuerte.":"👑 PRESENCIA LEGENDARIA.";
- $("bossHp").textContent=bossHp;
+ if(awakenedTimer>0){
+   $("presenceMsg").textContent=`🔥 ¡DESPERTAR ACTIVO! (${awakenedTimer}s) - x5 Poder`;
+ } else {
+   $("presenceMsg").textContent=presence<25?"Tu presencia todavía es de NPC.":presence<60?"😎 Se empieza a notar tu presencia.":presence<90?"🔥 Tenés presencia fuerte.":"👑 ¡LISTO PARA DESPERTAR!";
+ }
+
+ $("bossName").textContent=bInfo.name;
+ $("bossHp").textContent=fmt(bossHp);
+ $("bossMaxHp").textContent=fmt(bInfo.hp);
+
  document.querySelectorAll("[data-char]").forEach(b=>b.classList.toggle("active",b.dataset.char===character));
  document.querySelectorAll("[data-zone]").forEach(b=>b.classList.toggle("active",b.dataset.zone===zone));
  updateZoneTheme();
@@ -184,8 +211,17 @@ function render(){
 function log(t){let d=document.createElement("div");d.textContent=t;$("log").prepend(d);while($("log").children.length>12)$("log").lastChild.remove()}
 function pop(t){let p=document.createElement("div");p.className="pop";p.textContent=t;p.style.left=innerWidth/2+"px";p.style.top=innerHeight/2+"px";document.body.appendChild(p);setTimeout(()=>p.remove(),700)}
 
+function checkAwakening(){
+  if(presence>=100 && awakenedTimer===0){
+    awakenedTimer=15;
+    log("🔥 ¡HAS DESPERTADO! Poder x5 durante 15 segundos.");
+    pop("¡DESPERTAR!");
+  }
+}
+
 function farm(){
-  let g=clickPower();aura+=g;presence=Math.min(100,presence+.04);
+  let g=clickPower();aura+=g;presence=Math.min(100,presence+.08);
+  checkAwakening();
   pop("+"+fmt(g)+" AURA");
   if(Math.random()<.06) eventTrigger();
   render();
@@ -199,7 +235,16 @@ function eventTrigger(){
 $("farm").onclick=farm;
 $("buyPower").onclick=()=>{let c=powerCost();if(aura>=c){aura-=c;power++;log("⚡ Poder de Aura mejorado.");render()}};
 $("buyBot").onclick=()=>{let c=botCost();if(aura>=c){aura-=c;bot++;log("🤖 Aura Bot mejorado.");render()}};
-$("prestigeBtn").onclick=()=>{if(aura>=1000000){aura=0;prestige++;power=0;bot=0;$("event").textContent="⭐ ¡TRASCENDISTE DE PLANO!";log("⭐ Prestigio "+prestige+" conseguido.");render()}};
+
+$("prestigeBtn").onclick=()=>{
+  if(aura>=1000000){
+    aura=0;prestige++;power=0;bot=0;presence=0;
+    let rewardName = prestige===2?" (¡Skin 'Aura de Neón' desbloqueada!)":prestige===3?" (¡Zona 'Templo Ancestral' desbloqueada!)":"";
+    $("event").textContent="⭐ ¡TRASCENDISTE DE PLANO!"+rewardName;
+    log("⭐ Prestigio "+prestige+" conseguido."+rewardName);
+    render();
+  }
+};
 
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
@@ -216,22 +261,44 @@ document.querySelectorAll("[data-char]").forEach(b=>b.onclick=()=>{
 });
 
 document.querySelectorAll("[data-zone]").forEach(b=>b.onclick=()=>{
-  let req=zoneReq[b.dataset.zone]; if(aura>=req){zone=b.dataset.zone;log("🗺️ Viajaste a la zona: "+b.dataset.zone+".");render()}
+  let req=zoneReq[b.dataset.zone]; 
+  if(aura>=req){
+    zone=b.dataset.zone;
+    bossHp=zoneBosses[zone].hp;
+    log("🗺️ Viajaste a la zona: "+b.dataset.zone+".");
+    render();
+  }
   else $("event").textContent="🔒 Zona bloqueada. Necesitás "+fmt(req)+" Aura.";
 });
 
 $("bossHit").onclick=()=>{
-  if(bossHp<=0){bossHp=100;$("bossMsg").textContent="👹 ¡El Jefe regresó con más fuerza!";render();return}
-  let dmg=Math.max(1,Math.floor(clickPower()/10)); bossHp-=dmg; presence=Math.min(100,presence+1.5);
-  if(bossHp<=0){let reward=500+Math.floor(aura*.15);aura+=reward;$("bossMsg").textContent="🏆 ¡JEFE DERROTADO! +"+fmt(reward)+" Aura";log("👹 Jefe de zona aniquilado.");}
-  else $("bossMsg").textContent="💥 Impacto al jefe por "+fmt(dmg)+" de daño.";
+  let bInfo=zoneBosses[zone];
+  if(bossHp<=0){bossHp=bInfo.hp;$("bossMsg").textContent="👹 ¡El Jefe regresó con más fuerza!";render();return}
+  let dmg=Math.max(1,Math.floor(clickPower()/5)); bossHp-=dmg; presence=Math.min(100,presence+2);
+  checkAwakening();
+  if(bossHp<=0){
+    let reward=bInfo.hp*2;aura+=reward;
+    $("bossMsg").textContent="🏆 ¡JEFE DERROTADO! +"+fmt(reward)+" Aura";
+    log("👹 Jefe "+bInfo.name+" aniquilado.");
+  } else {
+    $("bossMsg").textContent="💥 Impacto al jefe por "+fmt(dmg)+" de daño.";
+  }
   render();
 };
 
-$("reset").onclick=()=>{if(confirm("¿Borrar todo el progreso de la partida?")){localStorage.removeItem("farmear_v03");localStorage.removeItem("farmear_v04");location.reload()}};
-setInterval(()=>{if(bot){aura+=botPower();render()}},1000);
+$("reset").onclick=()=>{if(confirm("¿Borrar todo el progreso de la partida?")){localStorage.removeItem("farmear_v04");localStorage.removeItem("farmear_v05");location.reload()}};
 
-log("🎮 V0.4 Base Oficial lista para compartir.");
+// Loop por segundo
+setInterval(()=>{
+  if(bot){aura+=botPower();render()}
+  if(awakenedTimer>0){
+    awakenedTimer--;
+    if(awakenedTimer===0) log("✨ El modo Despertar ha finalizado.");
+    render();
+  }
+},1000);
+
+log("🔥 V0.5 La Batalla por el Aura iniciada.");
 render();
 </script>
 </body>
