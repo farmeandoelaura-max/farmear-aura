@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Farmear Aura — V0.6 Animaciones y Secuencias</title>
+<title>Farmear Aura — V0.7 Avatar Animado Externo</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -32,35 +32,54 @@ body.awakened { animation: pulseBg .8s infinite alternate; }
 .bar{height:12px;background:rgba(0,0,0,0.4);border-radius:20px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#9b5cff,#ff4fd8,#ffe66d);transition:.25s}
 .progress{text-align:center;color:#94a3b8;font-size:12px;margin-top:6px}
 
-/* Contenedor del Botón de Farmeo y Personaje Animado */
-.farm-container{position:relative;display:flex;justify-content:center;align-items:center;margin:24px auto 16px;width:210px;height:210px}
-.farm{position:absolute;width:100%;height:100%;border:0;border-radius:50%;font-size:22px;font-weight:900;color:#fff;background:radial-gradient(circle at 35% 25%,#fff,#ffdf67 8%,#ff55d8 36%,#822dff 66%,#27105a);box-shadow:0 0 35px rgba(166,76,255,0.6),0 0 90px rgba(255,79,216,0.3);cursor:pointer;z-index:1}
+/* Botón de Farmeo Limpio */
+.farm{display:block;margin:20px auto 10px;width:200px;height:200px;border:0;border-radius:50%;font-size:24px;font-weight:900;color:#fff;background:radial-gradient(circle at 35% 25%,#fff,#ffdf67 8%,#ff55d8 36%,#822dff 66%,#27105a);box-shadow:0 0 35px rgba(166,76,255,0.6),0 0 90px rgba(255,79,216,0.3);cursor:pointer;transition:transform .1s}
 .farm:active{transform:scale(0.92)}
 
-/* Animaciones dinámicas de secuencia al tocar */
-.farm.anim-jump { animation: seqJump .2s ease; }
-.farm.anim-spin { animation: seqSpin .25s ease; }
-.farm.anim-pulse { animation: seqPulse .2s ease; }
-
-@keyframes seqJump {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08) translateY(-8px); }
-  100% { transform: scale(1); }
+/* Zona del Personaje Animado (Abajo del botón) */
+.character-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0 5px;
+  height: 90px;
 }
-@keyframes seqSpin {
-  0% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(0.95) rotate(5deg); }
-  100% { transform: scale(1) rotate(0deg); }
+.avatar-box {
+  font-size: 52px;
+  transition: transform 0.15s ease;
 }
-@keyframes seqPulse {
-  0% { box-shadow: 0 0 35px rgba(166,76,255,0.6), 0 0 90px rgba(255,79,216,0.3); }
-  50% { box-shadow: 0 0 60px #fff, 0 0 120px #ff4fd8; transform: scale(1.04); }
-  100% { box-shadow: 0 0 35px rgba(166,76,255,0.6), 0 0 90px rgba(255,79,216,0.3); }
+.avatar-status {
+  font-size: 13px;
+  color: #cbd5e1;
+  margin-top: 4px;
+  font-weight: bold;
 }
 
-.avatar-display{position:absolute;z-index:2;pointer-events:none;font-size:42px;transition:transform .1s}
+/* Secuencias de animación del avatar */
+.avatar-box.anim-jump { animation: charJump 0.3s ease; }
+.avatar-box.anim-spin { animation: charSpin 0.35s ease; }
+.avatar-box.anim-shake { animation: charShake 0.25s ease; }
 
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@keyframes charJump {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.2); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes charSpin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+@keyframes charShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-8px) scale(1.1); }
+  50% { transform: translateX(8px) scale(1.1); }
+  75% { transform: translateX(-8px) scale(1.1); }
+  100% { transform: translateX(0); }
+}
+
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
 .stat{background:rgba(0,0,0,0.3);padding:10px;border-radius:14px;text-align:center;font-size:12px;color:#94a3b8}.stat b{display:block;font-size:18px;margin-top:4px;color:#fff}
 
 .tabs{display:flex;gap:7px;margin-bottom:12px}
@@ -99,16 +118,19 @@ body.awakened { animation: pulseBg .8s infinite alternate; }
 </head>
 <body class="zone-Escuela">
 <div class="game">
-<div class="top"><h1>🔥 FARMEAR AURA</h1><div class="sub">V0.6 — Animaciones y Secuencias Dinámicas 😎</div></div>
+<div class="top"><h1>🔥 FARMEAR AURA</h1><div class="sub">V0.7 — Avatar Animado Externo 😎</div></div>
 
 <div class="card">
 <div class="aura" id="aura">0</div><div class="rank" id="rank">NPC</div>
 <div class="bar"><div class="fill" id="fill"></div></div><div class="progress" id="progress"></div>
 
-<!-- Botón con Avatar Animado Integrado -->
-<div class="farm-container">
-  <div class="avatar-display" id="avatarIcon">🧑</div>
-  <button class="farm" id="farm">FARMEAR<br>AURA</button>
+<!-- Botón limpio -->
+<button class="farm" id="farm">FARMEAR<br>AURA</button>
+
+<!-- Zona exclusiva del Personaje Animado Abajo -->
+<div class="character-stage">
+  <div class="avatar-box" id="avatarBox">🧑</div>
+  <div class="avatar-status" id="avatarTitle">NPC en la plaza</div>
 </div>
 
 <div class="stats">
@@ -185,16 +207,21 @@ const zoneBosses={
   Noche:{name:"Rey del Cringe",hp:10000},
   Dimension:{name:"Sombra Cósmica",hp:100000}
 };
-const charIcons={NPC:"🧑",Sigma:"😎",Chad:"🗿",Master:"👑"};
+const charData={
+  NPC:{icon:"🧑",name:"NPC en la plaza"},
+  Sigma:{icon:"😎",name:"Sigma Male grindset"},
+  Chad:{icon:"🗿",name:"Gigachad indiscutido"},
+  Master:{icon:"👑",name:"Aura Master supremo"}
+};
 
-const state=JSON.parse(localStorage.getItem("farmear_v06")||localStorage.getItem("farmear_v05")||localStorage.getItem("farmear_v04")||"{}");
+const state=JSON.parse(localStorage.getItem("farmear_v07")||localStorage.getItem("farmear_v06")||localStorage.getItem("farmear_v05")||"{}");
 let aura=state.aura||0,power=state.power||0,bot=state.bot||0,prestige=state.prestige||0;
 let presence=state.presence||0, character=state.character||"NPC", zone=state.zone||"Escuela", bossHp=state.bossHp??100;
 let awakenedTimer=0;
 
 const $=id=>document.getElementById(id);
 const fmt=n=>Math.floor(n).toLocaleString("es-AR");
-function save(){localStorage.setItem("farmear_v06",JSON.stringify({aura,power,bot,prestige,presence,character,zone,bossHp}));}
+function save(){localStorage.setItem("farmear_v07",JSON.stringify({aura,power,bot,prestige,presence,character,zone,bossHp}));}
 function rank(){let r=ranks[0];for(const x of ranks)if(aura>=x.need)r=x;return r}
 function next(){return ranks.find(x=>x.need>aura)}
 function prestigeMultiplier(){return 1+prestige*.5}
@@ -207,7 +234,9 @@ function botCost(){return Math.floor(250*Math.pow(2.7,bot))}
 
 function updateZoneTheme(){
   document.body.className = "zone-" + zone + (awakenedTimer>0?" awakened":"");
-  $("avatarIcon").textContent = charIcons[character] || "🧑";
+  let currentInfo = charData[character] || charData["NPC"];
+  $("avatarBox").textContent = currentInfo.icon;
+  $("avatarTitle").textContent = currentInfo.name;
 }
 
 function render(){
@@ -249,22 +278,20 @@ function checkAwakening(){
   }
 }
 
-// Secuencias de animación aleatorias al tocar el botón de farmeo
-const anims = ["anim-jump", "anim-spin", "anim-pulse"];
-function triggerRandomAnimation(){
-  const btn = $("farm");
-  // Limpiamos animaciones previas
-  anims.forEach(a => btn.classList.remove(a));
-  // Elegimos una al azar
-  const randomAnim = anims[Math.floor(Math.random() * anims.length)];
-  void btn.offsetWidth; // Trigger reflow para reiniciar la animación CSS
-  btn.classList.add(randomAnim);
+// Secuencias dinámicas en el avatar externo de abajo
+const charAnims = ["anim-jump", "anim-spin", "anim-shake"];
+function triggerCharacterAnimation(){
+  const box = $("avatarBox");
+  charAnims.forEach(a => box.classList.remove(a));
+  const randomAnim = charAnims[Math.floor(Math.random() * charAnims.length)];
+  void box.offsetWidth;
+  box.classList.add(randomAnim);
 }
 
 function farm(){
   let g=clickPower();aura+=g;presence=Math.min(100,presence+.08);
   checkAwakening();
-  triggerRandomAnimation();
+  triggerCharacterAnimation();
   pop("+"+fmt(g)+" AURA");
   if(Math.random()<.06) eventTrigger();
   render();
@@ -328,7 +355,7 @@ $("bossHit").onclick=()=>{
   render();
 };
 
-$("reset").onclick=()=>{if(confirm("¿Borrar todo el progreso de la partida?")){localStorage.removeItem("farmear_v04");localStorage.removeItem("farmear_v05");localStorage.removeItem("farmear_v06");location.reload()}};
+$("reset").onclick=()=>{if(confirm("¿Borrar todo el progreso de la partida?")){localStorage.removeItem("farmear_v04");localStorage.removeItem("farmear_v05");localStorage.removeItem("farmear_v06");localStorage.removeItem("farmear_v07");location.reload()}};
 
 setInterval(()=>{
   if(bot){aura+=botPower();render()}
@@ -339,7 +366,7 @@ setInterval(()=>{
   }
 },1000);
 
-log("🔥 V0.6 Animaciones y Secuencias iniciada.");
+log("🔥 V0.7 Avatar Animado Externo iniciada.");
 render();
 </script>
 </body>
