@@ -1,1 +1,0 @@
-# farmear-aura
