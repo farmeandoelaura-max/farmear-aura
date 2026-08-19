@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Farmear Aura — V0.4 El Mundo del Aura</title>
+<title>Farmear Aura — V0.4 Base Oficial</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -11,7 +11,6 @@ body{
   background:radial-gradient(circle at top,#29114d,#0b0715 48%,#05040a);
   color:#fff;transition:background .5s ease;
 }
-/* Temas dinámicos por Zona */
 body.zone-Escuela { background: radial-gradient(circle at top,#1e293b,#0f172a 48%,#020617); }
 body.zone-Ciudad { background: radial-gradient(circle at top,#1b263b,#0d1b2a 48%,#0b090a); }
 body.zone-Noche { background: radial-gradient(circle at top,#3a0ca3,#10002b 48%,#05010d); }
@@ -30,7 +29,7 @@ body.zone-Dimension { background: radial-gradient(circle at top,#7209b7,#3a0ca3 
 .farm{display:block;margin:24px auto 16px;width:210px;height:210px;border:0;border-radius:50%;font-size:25px;font-weight:900;color:#fff;background:radial-gradient(circle at 35% 25%,#fff,#ffdf67 8%,#ff55d8 36%,#822dff 66%,#27105a);box-shadow:0 0 35px rgba(166,76,255,0.6),0 0 90px rgba(255,79,216,0.3);cursor:pointer;transition:transform .1s}
 .farm:active{transform:scale(0.92)}
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .stat{background:rgba(0,0,0,0.3);padding:10px;border-radius:14px;text-align:center;font-size:12px;color:#94a3b8}.stat b{display:block;font-size:18px;margin-top:4px;color:#fff}
 
 .tabs{display:flex;gap:7px;margin-bottom:12px}
@@ -42,6 +41,7 @@ body.zone-Dimension { background: radial-gradient(circle at top,#7209b7,#3a0ca3 
 .shopitem small{color:#94a3b8}
 .buy{border:0;border-radius:10px;padding:10px 14px;background:#a13fe0;color:white;font-weight:900;white-space:nowrap;cursor:pointer}
 .buy:disabled{opacity:.3;cursor:not-allowed}
+.badge-soon{background:rgba(255,255,255,0.1);color:#cbd5e1;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:bold}
 
 .event{text-align:center;min-height:40px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.03);margin-top:12px;color:#e2e8f0;font-size:14px}
 .log{font-size:12px;color:#94a3b8;max-height:90px;overflow:auto}.log div{padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
@@ -77,7 +77,6 @@ body.zone-Dimension { background: radial-gradient(circle at top,#7209b7,#3a0ca3 
 <div class="stats">
 <div class="stat">⚡ Por toque<b id="perClick">+1</b></div>
 <div class="stat">🤖 Por segundo<b id="auto">0</b></div>
-<div class="stat">💎 Gemas<b id="gems">0</b></div>
 </div>
 <div class="event" id="event">Empezá a farmear para despertar tu Presencia.</div>
 </div>
@@ -97,7 +96,7 @@ body.zone-Dimension { background: radial-gradient(circle at top,#7209b7,#3a0ca3 
 <div id="shop" class="panel active">
 <div class="shopitem"><div>⚡ Poder de Aura<br><small>Nivel <span id="powerLv">0</span> · mejora tu toque</small></div><button class="buy" id="buyPower"></button></div>
 <div class="shopitem"><div>🤖 Aura Bot<br><small>Nivel <span id="botLv">0</span> · farmea automático</small></div><button class="buy" id="buyBot"></button></div>
-<div class="shopitem"><div>💎 Pack de Gemas<br><small>Prototipo gratuito: +100 Gemas</small></div><button class="buy" id="buyGems">+100</button></div>
+<div class="shopitem"><div>💎 Gemas Premium<br><small>Items exclusivos y ventajas</small></div><span class="badge-soon">Próximamente</span></div>
 </div>
 
 <div id="prestige" class="panel">
@@ -144,12 +143,12 @@ const ranks=[
 {name:"Entidad Cósmica",need:10000000}
 ];
 const state=JSON.parse(localStorage.getItem("farmear_v04")||localStorage.getItem("farmear_v03")||"{}");
-let aura=state.aura||0,gems=state.gems||0,power=state.power||0,bot=state.bot||0,prestige=state.prestige||0;
+let aura=state.aura||0,power=state.power||0,bot=state.bot||0,prestige=state.prestige||0;
 let presence=state.presence||0, character=state.character||"NPC", zone=state.zone||"Escuela", bossHp=state.bossHp??100;
 
 const $=id=>document.getElementById(id);
 const fmt=n=>Math.floor(n).toLocaleString("es-AR");
-function save(){localStorage.setItem("farmear_v04",JSON.stringify({aura,gems,power,bot,prestige,presence,character,zone,bossHp}));}
+function save(){localStorage.setItem("farmear_v04",JSON.stringify({aura,power,bot,prestige,presence,character,zone,bossHp}));}
 function rank(){let r=ranks[0];for(const x of ranks)if(aura>=x.need)r=x;return r}
 function next(){return ranks.find(x=>x.need>aura)}
 function prestigeMultiplier(){return 1+prestige*.5}
@@ -166,7 +165,7 @@ function updateZoneTheme(){
 function render(){
  const r=rank(),n=next();
  $("aura").textContent=fmt(aura);$("rank").textContent=r.name;
- $("perClick").textContent="+"+fmt(clickPower());$("auto").textContent=fmt(botPower())+"/s";$("gems").textContent=fmt(gems);
+ $("perClick").textContent="+"+fmt(clickPower());$("auto").textContent=fmt(botPower())+"/s";
  if(n){$("fill").style.width=Math.min(100,(aura-r.need)/(n.need-r.need)*100)+"%";$("progress").textContent=fmt(aura)+" / "+fmt(n.need)+" Aura"}
  else{$("fill").style.width="100%";$("progress").textContent="🔥 NIVEL MÁXIMO";}
  $("powerLv").textContent=power;$("botLv").textContent=bot;$("prestigeLv").textContent=prestige;$("prestigeMult").textContent="x"+prestigeMultiplier().toFixed(1);
@@ -200,7 +199,6 @@ function eventTrigger(){
 $("farm").onclick=farm;
 $("buyPower").onclick=()=>{let c=powerCost();if(aura>=c){aura-=c;power++;log("⚡ Poder de Aura mejorado.");render()}};
 $("buyBot").onclick=()=>{let c=botCost();if(aura>=c){aura-=c;bot++;log("🤖 Aura Bot mejorado.");render()}};
-$("buyGems").onclick=()=>{gems+=100;log("💎 +100 Gemas de prueba.");render()};
 $("prestigeBtn").onclick=()=>{if(aura>=1000000){aura=0;prestige++;power=0;bot=0;$("event").textContent="⭐ ¡TRASCENDISTE DE PLANO!";log("⭐ Prestigio "+prestige+" conseguido.");render()}};
 
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
@@ -225,7 +223,7 @@ document.querySelectorAll("[data-zone]").forEach(b=>b.onclick=()=>{
 $("bossHit").onclick=()=>{
   if(bossHp<=0){bossHp=100;$("bossMsg").textContent="👹 ¡El Jefe regresó con más fuerza!";render();return}
   let dmg=Math.max(1,Math.floor(clickPower()/10)); bossHp-=dmg; presence=Math.min(100,presence+1.5);
-  if(bossHp<=0){let reward=500+Math.floor(aura*.15);aura+=reward;gems+=25;$("bossMsg").textContent="🏆 ¡JEFE DERROTADO! +"+fmt(reward)+" Aura y +25 Gemas";log("👹 Jefe de zona aniquilado.");}
+  if(bossHp<=0){let reward=500+Math.floor(aura*.15);aura+=reward;$("bossMsg").textContent="🏆 ¡JEFE DERROTADO! +"+fmt(reward)+" Aura";log("👹 Jefe de zona aniquilado.");}
   else $("bossMsg").textContent="💥 Impacto al jefe por "+fmt(dmg)+" de daño.";
   render();
 };
@@ -233,9 +231,8 @@ $("bossHit").onclick=()=>{
 $("reset").onclick=()=>{if(confirm("¿Borrar todo el progreso de la partida?")){localStorage.removeItem("farmear_v03");localStorage.removeItem("farmear_v04");location.reload()}};
 setInterval(()=>{if(bot){aura+=botPower();render()}},1000);
 
-log("🎮 V0.4 iniciada: Bienvenidos al Mundo del Aura.");
+log("🎮 V0.4 Base Oficial lista para compartir.");
 render();
 </script>
 </body>
-                                                                                                             </html>
-
+</html>
