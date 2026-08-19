@@ -3,396 +3,1211 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Farmear Aura — V0.9 Manos Reales</title>
+<title>Farmear Aura — V1.0</title>
+
 <style>
 *{box-sizing:border-box}
+
 body{
-  margin:0;min-height:100vh;font-family:system-ui,-apple-system,sans-serif;
+  margin:0;
+  min-height:100vh;
+  font-family:system-ui,-apple-system,sans-serif;
   background:radial-gradient(circle at top,#29114d,#0b0715 48%,#05040a);
-  color:#fff;transition:background .5s ease;
-}
-body.zone-Escuela { background: radial-gradient(circle at top,#1e293b,#0f172a 48%,#020617); }
-body.zone-Ciudad { background: radial-gradient(circle at top,#1b263b,#0d1b2a 48%,#0b090a); }
-body.zone-Noche { background: radial-gradient(circle at top,#3a0ca3,#10002b 48%,#05010d); }
-body.zone-Dimension { background: radial-gradient(circle at top,#7209b7,#3a0ca3 48%,#10002b); }
-
-body.awakened { animation: pulseBg .8s infinite alternate; }
-@keyframes pulseBg {
-  0% { filter: brightness(1); }
-  100% { filter: brightness(1.3) hue-rotate(15deg); }
+  color:#fff;
+  transition:background .5s ease;
 }
 
-.game{max-width:540px;margin:auto;padding:16px}
-.top{text-align:center}h1{font-size:34px;margin:5px 0;letter-spacing:1px}
-.sub{color:#cbd5e1;margin-bottom:14px;font-size:14px}
-
-.card{background:rgba(255, 255, 255, 0.04);border:1px solid rgba(255, 255, 255, 0.08);border-radius:24px;padding:16px;margin:12px 0;box-shadow:0 12px 35px rgba(0,0,0,0.5);backdrop-filter:blur(6px)}
-.aura{font-size:48px;font-weight:900;text-align:center;letter-spacing:-1px}
-.rank{text-align:center;font-size:20px;font-weight:bold;margin:2px 0 12px;color:#facc15}
-.bar{height:12px;background:rgba(0,0,0,0.4);border-radius:20px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#9b5cff,#ff4fd8,#ffe66d);transition:.25s}
-.progress{text-align:center;color:#94a3b8;font-size:12px;margin-top:6px}
-
-/* Botón de Farmeo */
-.farm{display:block;margin:15px auto 5px;width:190px;height:190px;border:0;border-radius:50%;font-size:24px;font-weight:900;color:#fff;background:radial-gradient(circle at 35% 25%,#fff,#ffdf67 8%,#ff55d8 36%,#822dff 66%,#27105a);box-shadow:0 0 35px rgba(166,76,255,0.6),0 0 90px rgba(255,79,216,0.3);cursor:pointer;transition:transform .1s}
-.farm:active{transform:scale(0.92)}
-
-/* Escenario del Personaje de Cuerpo Entero Debajo */
-.character-stage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 10px 0;
-  height: 110px;
+body.zone-Escuela{
+  background:radial-gradient(circle at top,#1e293b,#0f172a 48%,#020617);
 }
 
-/* Estructura visual del monigote de cuerpo entero */
-.puppet {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 26px;
-  line-height: 1.1;
-  transition: transform 0.15s ease;
+body.zone-Ciudad{
+  background:radial-gradient(circle at top,#1b263b,#0d1b2a 48%,#0b090a);
 }
 
-.puppet-head { font-size: 32px; }
-.puppet-torso {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 26px;
-}
-.puppet-legs { font-size: 26px; margin-top: -2px; }
-
-.avatar-status {
-  font-size: 13px;
-  color: #cbd5e1;
-  margin-top: 6px;
-  font-weight: bold;
+body.zone-Noche{
+  background:radial-gradient(circle at top,#3a0ca3,#10002b 48%,#05010d);
 }
 
-/* Secuencias de animación dinámicas */
-.puppet.anim-flex { animation: flexSeq 0.3s ease; }
-.puppet.anim-hype { animation: hypeSeq 0.35s ease; }
-.puppet.anim-power { animation: powerSeq 0.25s ease; }
-
-@keyframes flexSeq {
-  0% { transform: scale(1) translateY(0); }
-  50% { transform: scale(1.15) translateY(-12px); }
-  100% { transform: scale(1) translateY(0); }
-}
-@keyframes hypeSeq {
-  0% { transform: rotate(0deg) scale(1); }
-  33% { transform: rotate(-8deg) scale(1.1); }
-  66% { transform: rotate(8deg) scale(1.1); }
-  100% { transform: rotate(0deg) scale(1); }
-}
-@keyframes powerSeq {
-  0% { transform: scale(1); filter: brightness(1); }
-  50% { transform: scale(1.2); filter: brightness(1.6) drop-shadow(0 0 10px #ff4fd8); }
-  100% { transform: scale(1); filter: brightness(1); }
+body.zone-Dimension{
+  background:radial-gradient(circle at top,#7209b7,#3a0ca3 48%,#10002b);
 }
 
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
-.stat{background:rgba(0,0,0,0.3);padding:10px;border-radius:14px;text-align:center;font-size:12px;color:#94a3b8}.stat b{display:block;font-size:18px;margin-top:4px;color:#fff}
+body.awakened{
+  animation:pulseBg .8s infinite alternate;
+}
 
-.tabs{display:flex;gap:7px;margin-bottom:12px}
-.tab{flex:1;padding:11px;border:0;border-radius:12px;background:rgba(255,255,255,0.05);color:#94a3b8;font-weight:800;cursor:pointer}
-.tab.active{background:#7b39c9;color:white}
-.panel{display:none}.panel.active{display:block}
+@keyframes pulseBg{
+  0%{filter:brightness(1)}
+  100%{filter:brightness(1.3) hue-rotate(15deg)}
+}
 
-.shopitem{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(0,0,0,0.25);padding:12px;border-radius:14px;margin:8px 0;text-align:left}
-.shopitem small{color:#94a3b8}
-.buy{border:0;border-radius:10px;padding:10px 14px;background:#a13fe0;color:white;font-weight:900;white-space:nowrap;cursor:pointer}
-.buy:disabled{opacity:.3;cursor:not-allowed}
-.badge-soon{background:rgba(255,255,255,0.1);color:#cbd5e1;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:bold}
+.game{
+  max-width:540px;
+  margin:auto;
+  padding:16px;
+}
 
-.event{text-align:center;min-height:40px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.03);margin-top:12px;color:#e2e8f0;font-size:14px}
-.log{font-size:12px;color:#94a3b8;max-height:90px;overflow:auto}.log div{padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
-.reset{display:block;margin:15px auto;background:transparent;color:#64748b;border:0;border-radius:10px;padding:8px 12px;cursor:pointer;font-size:12px}
+.top{text-align:center}
 
-.zoneGrid,.charGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.choice{border:1px solid rgba(255,255,255,0.08);background:rgba(0,0,0,0.3);color:#fff;border-radius:14px;padding:12px;text-align:left;cursor:pointer}
-.choice strong{display:block;font-size:15px}.choice small{color:#94a3b8}
-.choice.active{border-color:#d05cff;box-shadow:0 0 18px rgba(166,60,255,0.3);background:rgba(123,57,201,0.15)}
+h1{
+  font-size:34px;
+  margin:5px 0;
+  letter-spacing:1px;
+}
 
-.presence-box{background:linear-gradient(135deg,rgba(123,57,201,0.2),rgba(0,0,0,0.4));border:1px solid rgba(166,76,255,0.3)}
-.presence-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:900;font-size:18px}
-.presbar{height:10px;background:rgba(0,0,0,0.4);border-radius:20px;overflow:hidden}
-.presfill{height:100%;width:0;background:linear-gradient(90deg,#5de7ff,#d55cff,#ffe66d);transition:.3s}
-.notice{padding:8px;border-radius:10px;background:rgba(0,0,0,0.2);color:#cbd5e1;text-align:center;margin-top:8px;font-size:13px}
+.sub{
+  color:#cbd5e1;
+  margin-bottom:14px;
+  font-size:14px;
+}
 
-.boss{background:linear-gradient(135deg,#240c38,#0b0512);border:1px solid rgba(169,76,255,0.3);text-align:center}
-.boss h3{margin:5px 0 4px;font-size:20px;color:#f43f5e}
-.boss button{margin-top:10px;background:#e11d48}
+.card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;
+  padding:16px;
+  margin:12px 0;
+  box-shadow:0 12px 35px rgba(0,0,0,.5);
+  backdrop-filter:blur(6px);
+}
 
-.pop{position:fixed;pointer-events:none;font-weight:900;font-size:22px;animation:rise .7s forwards;color:#facc15;text-shadow:0 2px 10px rgba(0,0,0,0.8)}
-@keyframes rise{to{opacity:0;transform:translate(-50%,-90px) scale(1.2)}}
+.aura{
+  font-size:48px;
+  font-weight:900;
+  text-align:center;
+  letter-spacing:-1px;
+}
+
+.rank{
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  margin:2px 0 12px;
+  color:#facc15;
+}
+
+.bar{
+  height:12px;
+  background:rgba(0,0,0,.4);
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#9b5cff,#ff4fd8,#ffe66d);
+  transition:.25s;
+}
+
+.progress{
+  text-align:center;
+  color:#94a3b8;
+  font-size:12px;
+  margin-top:6px;
+}
+
+/* Botón principal */
+
+.farm{
+  display:block;
+  margin:15px auto 5px;
+  width:190px;
+  height:190px;
+  border:0;
+  border-radius:50%;
+  font-size:24px;
+  font-weight:900;
+  color:#fff;
+  background:radial-gradient(
+    circle at 35% 25%,
+    #fff,
+    #ffdf67 8%,
+    #ff55d8 36%,
+    #822dff 66%,
+    #27105a
+  );
+  box-shadow:
+    0 0 35px rgba(166,76,255,.6),
+    0 0 90px rgba(255,79,216,.3);
+  cursor:pointer;
+  transition:transform .1s;
+}
+
+.farm:active{
+  transform:scale(.92);
+}
+
+/* Caricatura completa */
+
+.character-stage{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin:12px 0;
+  height:165px;
+}
+
+.puppet{
+  position:relative;
+  width:150px;
+  height:140px;
+  transition:transform .15s ease;
+  filter:drop-shadow(0 5px 5px rgba(0,0,0,.35));
+}
+
+/* Cabeza */
+
+.puppet-head{
+  position:absolute;
+  left:50%;
+  top:0;
+  transform:translateX(-50%);
+  font-size:42px;
+  z-index:4;
+}
+
+/* Cuerpo */
+
+.puppet-torso{
+  position:absolute;
+  left:50%;
+  top:45px;
+  transform:translateX(-50%);
+  font-size:42px;
+  z-index:3;
+}
+
+/* Brazos */
+
+.puppet-arm{
+  position:absolute;
+  top:50px;
+  font-size:30px;
+  z-index:2;
+}
+
+.puppet-arm.left{
+  left:18px;
+  transform:rotate(18deg);
+}
+
+.puppet-arm.right{
+  right:18px;
+  transform:rotate(-18deg);
+}
+
+/* Manos */
+
+.puppet-hand{
+  position:absolute;
+  top:23px;
+  font-size:25px;
+}
+
+.puppet-hand.left{
+  left:-8px;
+}
+
+.puppet-hand.right{
+  right:-8px;
+}
+
+/* Piernas */
+
+.puppet-leg{
+  position:absolute;
+  bottom:10px;
+  font-size:31px;
+  z-index:2;
+}
+
+.puppet-leg.left{
+  left:39px;
+}
+
+.puppet-leg.right{
+  right:39px;
+}
+
+/* Pies */
+
+.puppet-foot{
+  position:absolute;
+  bottom:0;
+  font-size:22px;
+  z-index:1;
+}
+
+.puppet-foot.left{
+  left:29px;
+}
+
+.puppet-foot.right{
+  right:29px;
+}
+
+.avatar-status{
+  font-size:13px;
+  color:#cbd5e1;
+  margin-top:3px;
+  font-weight:bold;
+}
+
+/* Animaciones */
+
+.puppet.anim-flex{
+  animation:flexSeq .3s ease;
+}
+
+.puppet.anim-hype{
+  animation:hypeSeq .35s ease;
+}
+
+.puppet.anim-power{
+  animation:powerSeq .25s ease;
+}
+
+@keyframes flexSeq{
+  0%{
+    transform:scale(1) translateY(0);
+  }
+  50%{
+    transform:scale(1.15) translateY(-12px);
+  }
+  100%{
+    transform:scale(1) translateY(0);
+  }
+}
+
+@keyframes hypeSeq{
+  0%{
+    transform:rotate(0) scale(1);
+  }
+  33%{
+    transform:rotate(-8deg) scale(1.1);
+  }
+  66%{
+    transform:rotate(8deg) scale(1.1);
+  }
+  100%{
+    transform:rotate(0) scale(1);
+  }
+}
+
+@keyframes powerSeq{
+  0%{
+    transform:scale(1);
+    filter:brightness(1);
+  }
+  50%{
+    transform:scale(1.2);
+    filter:brightness(1.6) drop-shadow(0 0 10px #ff4fd8);
+  }
+  100%{
+    transform:scale(1);
+    filter:brightness(1);
+  }
+}
+
+/* Estadísticas */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:10px;
+}
+
+.stat{
+  background:rgba(0,0,0,.3);
+  padding:10px;
+  border-radius:14px;
+  text-align:center;
+  font-size:12px;
+  color:#94a3b8;
+}
+
+.stat b{
+  display:block;
+  font-size:18px;
+  margin-top:4px;
+  color:#fff;
+}
+
+/* Pestañas */
+
+.tabs{
+  display:flex;
+  gap:7px;
+  margin-bottom:12px;
+}
+
+.tab{
+  flex:1;
+  padding:11px;
+  border:0;
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  color:#94a3b8;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.tab.active{
+  background:#7b39c9;
+  color:white;
+}
+
+.panel{
+  display:none;
+}
+
+.panel.active{
+  display:block;
+}
+
+/* Tienda */
+
+.shopitem{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  background:rgba(0,0,0,.25);
+  padding:12px;
+  border-radius:14px;
+  margin:8px 0;
+  text-align:left;
+}
+
+.shopitem small{
+  color:#94a3b8;
+}
+
+.buy{
+  border:0;
+  border-radius:10px;
+  padding:10px 14px;
+  background:#a13fe0;
+  color:white;
+  font-weight:900;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.buy:disabled{
+  opacity:.3;
+  cursor:not-allowed;
+}
+
+.badge-soon{
+  background:rgba(255,255,255,.1);
+  color:#cbd5e1;
+  padding:6px 12px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+/* Eventos y registros */
+
+.event{
+  text-align:center;
+  min-height:40px;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.03);
+  margin-top:12px;
+  color:#e2e8f0;
+  font-size:14px;
+}
+
+.log{
+  font-size:12px;
+  color:#94a3b8;
+  max-height:90px;
+  overflow:auto;
+}
+
+.log div{
+  padding:4px 0;
+  border-bottom:1px solid rgba(255,255,255,.03);
+}
+
+.reset{
+  display:block;
+  margin:15px auto;
+  background:transparent;
+  color:#64748b;
+  border:0;
+  border-radius:10px;
+  padding:8px 12px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+/* Selección de personajes y zonas */
+
+.zoneGrid,
+.charGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.choice{
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(0,0,0,.3);
+  color:#fff;
+  border-radius:14px;
+  padding:12px;
+  text-align:left;
+  cursor:pointer;
+}
+
+.choice strong{
+  display:block;
+  font-size:15px;
+}
+
+.choice small{
+  color:#94a3b8;
+}
+
+.choice.active{
+  border-color:#d05cff;
+  box-shadow:0 0 18px rgba(166,60,255,.3);
+  background:rgba(123,57,201,.15);
+}
+
+/* Presencia */
+
+.presence-box{
+  background:linear-gradient(
+    135deg,
+    rgba(123,57,201,.2),
+    rgba(0,0,0,.4)
+  );
+  border:1px solid rgba(166,76,255,.3);
+}
+
+.presence-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+  font-weight:900;
+  font-size:18px;
+}
+
+.presbar{
+  height:10px;
+  background:rgba(0,0,0,.4);
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.presfill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#5de7ff,#d55cff,#ffe66d);
+  transition:.3s;
+}
+
+.notice{
+  padding:8px;
+  border-radius:10px;
+  background:rgba(0,0,0,.2);
+  color:#cbd5e1;
+  text-align:center;
+  margin-top:8px;
+  font-size:13px;
+}
+
+/* Jefe */
+
+.boss{
+  background:linear-gradient(135deg,#240c38,#0b0512);
+  border:1px solid rgba(169,76,255,.3);
+  text-align:center;
+}
+
+.boss h3{
+  margin:5px 0 4px;
+  font-size:20px;
+  color:#f43f5e;
+}
+
+.boss button{
+  margin-top:10px;
+  background:#e11d48;
+}
+
+/* Texto flotante */
+
+.pop{
+  position:fixed;
+  pointer-events:none;
+  font-weight:900;
+  font-size:22px;
+  animation:rise .7s forwards;
+  color:#facc15;
+  text-shadow:0 2px 10px rgba(0,0,0,.8);
+}
+
+@keyframes rise{
+  to{
+    opacity:0;
+    transform:translate(-50%,-90px) scale(1.2);
+  }
+}
 </style>
 </head>
+
 <body class="zone-Escuela">
+
 <div class="game">
-<div class="top"><h1>🔥 FARMEAR AURA</h1><div class="sub">V0.9 — Manos Reales 😎</div></div>
 
-<div class="card">
-<div class="aura" id="aura">0</div><div class="rank" id="rank">NPC</div>
-<div class="bar"><div class="fill" id="fill"></div></div><div class="progress" id="progress"></div>
+  <div class="top">
+    <h1>🔥 FARMEAR AURA</h1>
+    <div class="sub">V1.0 — Caricaturas con extremidades 😎</div>
+  </div>
 
-<!-- Botón limpio -->
-<button class="farm" id="farm">FARMEAR<br>AURA</button>
+  <div class="card">
 
-<!-- Monigote de Cuerpo Entero con Manos Reales -->
-<div class="character-stage">
-  <div class="puppet" id="puppetBox">
-    <div class="puppet-head" id="pHead">🧑</div>
-    <div class="puppet-torso">
-      <span id="pLeftHand">✋</span><span id="pBody">👕</span><span id="pRightHand">🤚</span>
+    <div class="aura" id="aura">0</div>
+    <div class="rank" id="rank">NPC</div>
+
+    <div class="bar">
+      <div class="fill" id="fill"></div>
     </div>
-    <div class="puppet-legs">👖</div>
+
+    <div class="progress" id="progress"></div>
+
+    <button class="farm" id="farm">
+      FARMEAR<br>AURA
+    </button>
+
+    <!-- Caricatura completa -->
+    <div class="character-stage">
+
+      <div class="puppet" id="puppetBox">
+
+        <div class="puppet-head" id="pHead">🧑</div>
+
+        <div class="puppet-torso" id="pBody">👕</div>
+
+        <div class="puppet-arm left" id="pLeftArm">
+          💪
+          <div class="puppet-hand left" id="pLeftHand">✋</div>
+        </div>
+
+        <div class="puppet-arm right" id="pRightArm">
+          💪
+          <div class="puppet-hand right" id="pRightHand">🤚</div>
+        </div>
+
+        <div class="puppet-leg left" id="pLeftLeg">👖</div>
+        <div class="puppet-leg right" id="pRightLeg">👖</div>
+
+        <div class="puppet-foot left" id="pLeftFoot">👟</div>
+        <div class="puppet-foot right" id="pRightFoot">👟</div>
+
+      </div>
+
+      <div class="avatar-status" id="avatarTitle">
+        NPC en la plaza
+      </div>
+
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        ⚡ Por toque
+        <b id="perClick">+1</b>
+      </div>
+
+      <div class="stat">
+        🤖 Por segundo
+        <b id="auto">0</b>
+      </div>
+    </div>
+
+    <div class="event" id="event">
+      Empezá a farmear para despertar tu Presencia.
+    </div>
+
   </div>
-  <div class="avatar-status" id="avatarTitle">NPC en la plaza</div>
-</div>
 
-<div class="stats">
-<div class="stat">⚡ Por toque<b id="perClick">+1</b></div>
-<div class="stat">🤖 Por segundo<b id="auto">0</b></div>
-</div>
-<div class="event" id="event">Empezá a farmear para despertar tu Presencia.</div>
-</div>
+  <div class="card presence-box">
 
-<div class="card presence-box">
-  <div class="presence-header"><span>🧠 Presencia</span><span id="presence">0</span>%</div>
-  <div class="presbar"><div class="presfill" id="presfill"></div></div>
-  <div class="notice" id="presenceMsg">Tu presencia todavía es de NPC.</div>
-</div>
+    <div class="presence-header">
+      <span>🧠 Presencia</span>
+      <span id="presence">0</span>%
+    </div>
 
-<div class="card">
-<div class="tabs">
-<button class="tab active" data-tab="shop">🛒 Tienda</button>
-<button class="tab" data-tab="prestige">⭐ Trascender</button>
-</div>
+    <div class="presbar">
+      <div class="presfill" id="presfill"></div>
+    </div>
 
-<div id="shop" class="panel active">
-<div class="shopitem"><div>⚡ Poder de Aura<br><small>Nivel <span id="powerLv">0</span> · mejora tu toque</small></div><button class="buy" id="buyPower"></button></div>
-<div class="shopitem"><div>🤖 Aura Bot<br><small>Nivel <span id="botLv">0</span> · farmea automático</small></div><button class="buy" id="buyBot"></button></div>
-<div class="shopitem"><div>💎 Gemas Premium<br><small>Items exclusivos y ventajas</small></div><span class="badge-soon">Próximamente</span></div>
-</div>
+    <div class="notice" id="presenceMsg">
+      Tu presencia todavía es de NPC.
+    </div>
 
-<div id="prestige" class="panel">
-<p>Al llegar a <b>1.000.000 Aura</b> podés trascender de plano.</p>
-<p>⭐ Prestigios: <b id="prestigeLv">0</b><br>⚡ Multiplicador permanente: <b id="prestigeMult">x1</b></p>
-<button class="buy" id="prestigeBtn">TRASCENDER</button>
-</div>
-</div>
-
-<div class="card">
-  <h3>🧍 Personaje Actual</h3>
-  <div class="charGrid">
-    <button class="choice active" data-char="NPC"><strong>🧑 NPC</strong><small>Gratis · x1 Aura</small></button>
-    <button class="choice" data-char="Sigma"><strong>😎 Sigma</strong><small>10k Aura · x1,10</small></button>
-    <button class="choice" data-char="Chad"><strong>🗿 Chad</strong><small>100k Aura · x1,25</small></button>
-    <button class="choice" data-char="Master"><strong>👑 Aura Master</strong><small>1M Aura · x1,50</small></button>
   </div>
-</div>
 
-<div class="card">
-  <h3>🗺️ Escenarios (Zonas)</h3>
-  <div class="zoneGrid">
-    <button class="choice active" data-zone="Escuela"><strong>🏫 Escuela</strong><small>Zona Inicial</small></button>
-    <button class="choice" data-zone="Ciudad"><strong>🏙️ Ciudad</strong><small>10.000 Aura</small></button>
-    <button class="choice" data-zone="Noche"><strong>🌃 Ciudad Nocturna</strong><small>100.000 Aura</small></button>
-    <button class="choice" data-zone="Dimension"><strong>🌌 Dimensión Aura</strong><small>1.000.000 Aura</small></button>
+  <div class="card">
+
+    <div class="tabs">
+      <button class="tab active" data-tab="shop">
+        🛒 Tienda
+      </button>
+
+      <button class="tab" data-tab="prestige">
+        ⭐ Trascender
+      </button>
+    </div>
+
+    <div id="shop" class="panel active">
+
+      <div class="shopitem">
+        <div>
+          ⚡ Poder de Aura<br>
+          <small>
+            Nivel <span id="powerLv">0</span> · mejora tu toque
+          </small>
+        </div>
+
+        <button class="buy" id="buyPower"></button>
+      </div>
+
+      <div class="shopitem">
+        <div>
+          🤖 Aura Bot<br>
+          <small>
+            Nivel <span id="botLv">0</span> · farmea automático
+          </small>
+        </div>
+
+        <button class="buy" id="buyBot"></button>
+      </div>
+
+      <div class="shopitem">
+        <div>
+          💎 Gemas Premium<br>
+          <small>Items exclusivos y ventajas</small>
+        </div>
+
+        <span class="badge-soon">Próximamente</span>
+      </div>
+
+    </div>
+
+    <div id="prestige" class="panel">
+
+      <p>
+        Al llegar a <b>1.000.000 Aura</b> podés trascender de plano.
+      </p>
+
+      <p>
+        ⭐ Prestigios: <b id="prestigeLv">0</b><br>
+        ⚡ Multiplicador permanente:
+        <b id="prestigeMult">x1</b>
+      </p>
+
+      <button class="buy" id="prestigeBtn">
+        TRASCENDER
+      </button>
+
+    </div>
+
   </div>
-</div>
 
-<div class="card boss">
-  <h3>👹 JEFE: <span id="bossName">NPC SUPREMO</span></h3>
-  <div>Resistencia: <b id="bossHp">100</b>/<span id="bossMaxHp">100</span></div>
-  <div class="notice" id="bossMsg">Atacá con tu Aura para dominar el escenario.</div>
-  <button class="buy" id="bossHit">ATACAR JEFE</button>
-</div>
+  <div class="card">
 
-<div class="card"><div class="log" id="log"></div><button class="reset" id="reset">Reiniciar partida</button></div>
+    <h3>🧍 Personaje Actual</h3>
+
+    <div class="charGrid">
+
+      <button class="choice active" data-char="NPC">
+        <strong>🧑 NPC</strong>
+        <small>Gratis · x1 Aura</small>
+      </button>
+
+      <button class="choice" data-char="Sigma">
+        <strong>😎 Sigma</strong>
+        <small>10k Aura · x1,10</small>
+      </button>
+
+      <button class="choice" data-char="Chad">
+        <strong>🗿 Chad</strong>
+        <small>100k Aura · x1,25</small>
+      </button>
+
+      <button class="choice" data-char="Master">
+        <strong>👑 Aura Master</strong>
+        <small>1M Aura · x1,50</small>
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h3>🗺️ Escenarios — Zonas</h3>
+
+    <div class="zoneGrid">
+
+      <button class="choice active" data-zone="Escuela">
+        <strong>🏫 Escuela</strong>
+        <small>Zona inicial</small>
+      </button>
+
+      <button class="choice" data-zone="Ciudad">
+        <strong>🏙️ Ciudad</strong>
+        <small>10.000 Aura</small>
+      </button>
+
+      <button class="choice" data-zone="Noche">
+        <strong>🌃 Ciudad Nocturna</strong>
+        <small>100.000 Aura</small>
+      </button>
+
+      <button class="choice" data-zone="Dimension">
+        <strong>🌌 Dimensión Aura</strong>
+        <small>1.000.000 Aura</small>
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="card boss">
+
+    <h3>
+      👹 JEFE:
+      <span id="bossName">NPC SUPREMO</span>
+    </h3>
+
+    <div>
+      Resistencia:
+      <b id="bossHp">100</b> /
+      <span id="bossMaxHp">100</span>
+    </div>
+
+    <div class="notice" id="bossMsg">
+      Atacá con tu Aura para dominar el escenario.
+    </div>
+
+    <button class="buy" id="bossHit">
+      ATACAR JEFE
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <div class="log" id="log"></div>
+
+    <button class="reset" id="reset">
+      Reiniciar partida
+    </button>
+
+  </div>
+
 </div>
 
 <script>
 const ranks=[
-{name:"NPC",need:0},{name:"Con Presencia",need:100},{name:"Aura Master",need:1000},
-{name:"Chad",need:10000},{name:"Leyenda",need:100000},{name:"Dios del Aura",need:1000000},
-{name:"Entidad Cósmica",need:10000000}
+  {name:"NPC",need:0},
+  {name:"Con Presencia",need:100},
+  {name:"Aura Master",need:1000},
+  {name:"Chad",need:10000},
+  {name:"Leyenda",need:100000},
+  {name:"Dios del Aura",need:1000000},
+  {name:"Entidad Cósmica",need:10000000}
 ];
+
 const zoneBosses={
   Escuela:{name:"Celador NPC",hp:100},
   Ciudad:{name:"Inspector de Estilo",hp:1000},
   Noche:{name:"Rey del Cringe",hp:10000},
   Dimension:{name:"Sombra Cósmica",hp:100000}
 };
+
 const charConfigs={
-  NPC:{head:"🧑",leftHand:"✋",body:"👕",rightHand:"🤚",name:"NPC en la plaza"},
-  Sigma:{head:"😎",leftHand:"👍",body:"🧥",rightHand:"🔥",name:"Sigma Male grindset"},
-  Chad:{head:"🗿",leftHand:"💪",body:"🎽",rightHand:"💪",name:"Gigachad indiscutido"},
-  Master:{head:"👑",leftHand:"✨",body:"👘",rightHand:"✨",name:"Aura Master supremo"}
+
+  NPC:{
+    head:"🧑",
+    torso:"👕",
+    arm:"💪",
+    leftHand:"✋",
+    rightHand:"🤚",
+    leg:"👖",
+    foot:"👟",
+    name:"NPC en la plaza"
+  },
+
+  Sigma:{
+    head:"😎",
+    torso:"🧥",
+    arm:"💪",
+    leftHand:"👍",
+    rightHand:"🔥",
+    leg:"👖",
+    foot:"👟",
+    name:"Sigma Male grindset"
+  },
+
+  Chad:{
+    head:"🗿",
+    torso:"🎽",
+    arm:"💪",
+    leftHand:"💪",
+    rightHand:"💪",
+    leg:"🩳",
+    foot:"🥾",
+    name:"Gigachad indiscutido"
+  },
+
+  Master:{
+    head:"👑",
+    torso:"👘",
+    arm:"✨",
+    leftHand:"✨",
+    rightHand:"✨",
+    leg:"👖",
+    foot:"✨",
+    name:"Aura Master supremo"
+  }
+
 };
 
-const state=JSON.parse(localStorage.getItem("farmear_v09")||localStorage.getItem("farmear_v08")||localStorage.getItem("farmear_v07")||"{}");
-let aura=state.aura||0,power=state.power||0,bot=state.bot||0,prestige=state.prestige||0;
-let presence=state.presence||0, character=state.character||"NPC", zone=state.zone||"Escuela", bossHp=state.bossHp??100;
+const saved=
+  localStorage.getItem("farmear_v10") ||
+  localStorage.getItem("farmear_v09") ||
+  localStorage.getItem("farmear_v08") ||
+  localStorage.getItem("farmear_v07");
+
+const state=JSON.parse(saved||"{}");
+
+let aura=state.aura||0;
+let power=state.power||0;
+let bot=state.bot||0;
+let prestige=state.prestige||0;
+let presence=state.presence||0;
+let character=state.character||"NPC";
+let zone=state.zone||"Escuela";
+let bossHp=state.bossHp??100;
 let awakenedTimer=0;
 
 const $=id=>document.getElementById(id);
-const fmt=n=>Math.floor(n).toLocaleString("es-AR");
-function save(){localStorage.setItem("farmear_v09",JSON.stringify({aura,power,bot,prestige,presence,character,zone,bossHp}));}
-function rank(){let r=ranks[0];for(const x of ranks)if(aura>=x.need)r=x;return r}
-function next(){return ranks.find(x=>x.need>aura)}
-function prestigeMultiplier(){return 1+prestige*.5}
-function charMult(){return character==="Sigma"?1.1:character==="Chad"?1.25:character==="Master"?1.5:1}
-function awakenMult(){return awakenedTimer>0?5:1}
-function clickPower(){return (1+power)*prestigeMultiplier()*charMult()*awakenMult()}
-function botPower(){return bot*prestigeMultiplier()}
-function powerCost(){return Math.floor(100*Math.pow(2.4,power))}
-function botCost(){return Math.floor(250*Math.pow(2.7,bot))}
 
-function updateZoneTheme(){
-  document.body.className = "zone-" + zone + (awakenedTimer>0?" awakened":"");
-  let cfg = charConfigs[character] || charConfigs["NPC"];
-  $("pHead").textContent = cfg.head;
-  $("pLeftHand").textContent = cfg.leftHand;
-  $("pBody").textContent = cfg.body;
-  $("pRightHand").textContent = cfg.rightHand;
-  $("avatarTitle").textContent = cfg.name;
+const fmt=n=>
+  Math.floor(n).toLocaleString("es-AR");
+
+function save(){
+
+  localStorage.setItem(
+    "farmear_v10",
+    JSON.stringify({
+      aura,
+      power,
+      bot,
+      prestige,
+      presence,
+      character,
+      zone,
+      bossHp
+    })
+  );
+
+}
+
+function getRank(){
+
+  let current=ranks[0];
+
+  for(const item of ranks){
+
+    if(aura>=item.need){
+      current=item;
+    }
+
+  }
+
+  return current;
+}
+
+function getNextRank(){
+
+  return ranks.find(item=>item.need>aura);
+
+}
+
+function prestigeMultiplier(){
+
+  return 1+(prestige*.5);
+
+}
+
+function charMult(){
+
+  if(character==="Sigma") return 1.1;
+  if(character==="Chad") return 1.25;
+  if(character==="Master") return 1.5;
+
+  return 1;
+
+}
+
+function awakenMult(){
+
+  return awakenedTimer>0 ? 5 : 1;
+
+}
+
+function clickPower(){
+
+  return (1+power)
+    * prestigeMultiplier()
+    * charMult()
+    * awakenMult();
+
+}
+
+function botPower(){
+
+  return bot*prestigeMultiplier();
+
+}
+
+function powerCost(){
+
+  return Math.floor(100*Math.pow(2.4,power));
+
+}
+
+function botCost(){
+
+  return Math.floor(250*Math.pow(2.7,bot));
+
+}
+
+function updateCharacter(){
+
+  const cfg=
+    charConfigs[character] ||
+    charConfigs.NPC;
+
+  $("pHead").textContent=cfg.head;
+  $("pBody").textContent=cfg.torso;
+
+  $("pLeftArm").childNodes[0].nodeValue=
+    cfg.arm+" ";
+
+  $("pRightArm").childNodes[0].nodeValue=
+    cfg.arm+" ";
+
+  $("pLeftHand").textContent=cfg.leftHand;
+  $("pRightHand").textContent=cfg.rightHand;
+
+  $("pLeftLeg").textContent=cfg.leg;
+  $("pRightLeg").textContent=cfg.leg;
+
+  $("pLeftFoot").textContent=cfg.foot;
+  $("pRightFoot").textContent=cfg.foot;
+
+  $("avatarTitle").textContent=cfg.name;
+
+}
+
+function updateTheme(){
+
+  document.body.className=
+    "zone-"+zone+
+    (awakenedTimer>0 ? " awakened" : "");
+
+  updateCharacter();
+
 }
 
 function render(){
- const r=rank(),n=next(), bInfo=zoneBosses[zone];
- $("aura").textContent=fmt(aura);$("rank").textContent=r.name;
- $("perClick").textContent="+"+fmt(clickPower());$("auto").textContent=fmt(botPower())+"/s";
- if(n){$("fill").style.width=Math.min(100,(aura-r.need)/(n.need-r.need)*100)+"%";$("progress").textContent=fmt(aura)+" / "+fmt(n.need)+" Aura"}
- else{$("fill").style.width="100%";$("progress").textContent="🔥 NIVEL MÁXIMO";}
- $("powerLv").textContent=power;$("botLv").textContent=bot;$("prestigeLv").textContent=prestige;$("prestigeMult").textContent="x"+prestigeMultiplier().toFixed(1);
- $("buyPower").textContent=fmt(powerCost())+" Aura";$("buyPower").disabled=aura<powerCost();
- $("buyBot").textContent=fmt(botCost())+" Aura";$("buyBot").disabled=aura<botCost();
- $("prestigeBtn").disabled=aura<1000000;
- 
- $("presence").textContent=Math.floor(presence);$("presfill").style.width=Math.min(100,presence)+"%";
- if(awakenedTimer>0){
-   $("presenceMsg").textContent=`🔥 ¡DESPERTAR ACTIVO! (${awakenedTimer}s) - x5 Poder`;
- } else {
-   $("presenceMsg").textContent=presence<25?"Tu presencia todavía es de NPC.":presence<60?"😎 Se empieza a notar tu presencia.":presence<90?"🔥 Tenés presencia fuerte.":"👑 ¡LISTO PARA DESPERTAR!";
- }
 
- $("bossName").textContent=bInfo.name;
- $("bossHp").textContent=fmt(bossHp);
- $("bossMaxHp").textContent=fmt(bInfo.hp);
+  const r=getRank();
+  const n=getNextRank();
+  const boss=zoneBosses[zone];
 
- document.querySelectorAll("[data-char]").forEach(b=>b.classList.toggle("active",b.dataset.char===character));
- document.querySelectorAll("[data-zone]").forEach(b=>b.classList.toggle("active",b.dataset.zone===zone));
- updateZoneTheme();
- save();
+  $("aura").textContent=fmt(aura);
+  $("rank").textContent=r.name;
+
+  $("perClick").textContent=
+    "+"+fmt(clickPower());
+
+  $("auto").textContent=
+    fmt(botPower())+"/s";
+
+  if(n){
+
+    const percentage=
+      ((aura-r.need)/(n.need-r.need))*100;
+
+    $("fill").style.width=
+      Math.min(100,percentage)+"%";
+
+    $("progress").textContent=
+      fmt(aura)+" / "+fmt(n.need)+" Aura";
+
+  }else{
+
+    $("fill").style.width="100%";
+    $("progress").textContent=
+      "🔥 NIVEL MÁXIMO";
+
+  }
+
+  $("powerLv").textContent=power;
+  $("botLv").textContent=bot;
+  $("prestigeLv").textContent=prestige;
+
+  $("prestigeMult").textContent=
+    "x"+prestigeMultiplier().toFixed(1);
+
+  $("buyPower").textContent=
+    fmt(powerCost())+" Aura";
+
+  $("buyPower").disabled=
+    aura<powerCost();
+
+  $("buyBot").textContent=
+    fmt(botCost())+" Aura";
+
+  $("buyBot").disabled=
+    aura<botCost();
+
+  $("prestigeBtn").disabled=
+    aura<1000000;
+
+  $("presence").textContent=
+    Math.floor(presence);
+
+  $("presfill").style.width=
+    Math.min(100,presence)+"%";
+
+  if(awakenedTimer>0){
+
+    $("presenceMsg").textContent=
+      "🔥 ¡DESPERTAR ACTIVO! ("+
+      awakenedTimer+
+      "s) — Poder x5";
+
+  }else if(presence<25){
+
+    $("presenceMsg").textContent=
+      "Tu presencia todavía es de NPC.";
+
+  }else if(presence<60){
+
+    $("presenceMsg").textContent=
+      "😎 Se empieza a notar tu presencia.";
+
+  }else if(presence<90){
+
+    $("presenceMsg").textContent=
+      "🔥 Tenés presencia fuerte.";
+
+  }else{
+
+    $("presenceMsg").textContent=
+      "👑 ¡Listo para despertar!";
+
+  }
+
+  $("bossName").textContent=boss.name;
+  $("bossHp").textContent=fmt(Math.max(0,bossHp));
+  $("bossMaxHp").textContent=fmt(boss.hp);
+
+  document.querySelectorAll("[data-char]")
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        button.dataset.char===character
+      );
+    });
+
+  document.querySelectorAll("[data-zone]")
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        button.dataset.zone===zone
+      );
+    });
+
+  updateTheme();
+  save();
+
 }
 
-function log(t){let d=document.createElement("div");d.textContent=t;$("log").prepend(d);while($("log").children.length>12)$("log").lastChild.remove()}
-function pop(t){let p=document.createElement("div");p.className="pop";p.textContent=t;p.style.left=innerWidth/2+"px";p.style.top=innerHeight/2+"px";document.body.appendChild(p);setTimeout(()=>p.remove(),700)}
+function log(message){
+
+  const item=document.createElement("div");
+
+  item.textContent=message;
+
+  $("log").prepend(item);
+
+  while($("log").children.length>12){
+    $("log").lastChild.remove();
+  }
+
+}
+
+function pop(message){
+
+  const item=document.createElement("div");
+
+  item.className="pop";
+  item.textContent=message;
+  item.style.left=innerWidth/2+"px";
+  item.style.top=innerHeight/2+"px";
+
+  document.body.appendChild(item);
+
+  setTimeout(()=>{
+    item.remove();
+  },700);
+
+}
 
 function checkAwakening(){
+
   if(presence>=100 && awakenedTimer===0){
+
     awakenedTimer=15;
+
     log("🔥 ¡HAS DESPERTADO! Poder x5 durante 15 segundos.");
     pop("¡DESPERTAR!");
+
   }
+
 }
 
-const puppetAnims = ["anim-flex", "anim-hype", "anim-power"];
-function triggerPuppetAnimation(){
-  const puppet = $("puppetBox");
-  puppetAnims.forEach(a => puppet.classList.remove(a));
-  const randomAnim = puppetAnims[Math.floor(Math.random() * puppetAnims.length)];
-  void puppet.offsetWidth;
-  puppet.classList.add(randomAnim);
-}
+const puppetAnimations=[
+  "anim-flex",
+  "anim-hype",
+  "anim-power"
+];
 
-function farm(){
-  let g=clickPower();aura+=g;presence=Math.min(100,presence+.08);
-  checkAwakening();
-  triggerPuppetAnimation();
-  pop("+"+fmt(g)+" AURA");
-  if(Math.random()<.06) eventTrigger();
-  render();
-}
+function animateCharacter(){
 
-function eventTrigger(){
- if(Math.random()<.75){let b=Math.max(20,Math.floor(aura*.1)+10);aura+=b;$("event").textContent="🔥 MOMENTO AURA: +"+fmt(b);log("🔥 Evento positivo: +"+fmt(b)+" Aura")}
- else{let l=Math.min(aura,Math.max(5,Math.floor(aura*.05)));aura-=l;$("event").textContent="💀 AURA NEGATIVA: -"+fmt(l);log("💀 Evento NPC: -"+fmt(l)+" Aura")}
-}
+  const puppet=$("puppetBox");
 
-$("farm").onclick=farm;
-$("buyPower").onclick=()=>{let c=powerCost();if(aura>=c){aura-=c;power++;log("⚡ Poder de Aura mejorado.");render()}};
-$("buyBot").onclick=()=>{let c=botCost();if(aura>=c){aura-=c;bot++;log("🤖 Aura Bot mejorado.");render()}};
+  puppetAnimations.forEach(animation=>{
+    puppet.classList.remove(animation);
+  });
 
-$("prestigeBtn").onclick=()=>{
-  if(aura>=1000000){
-    aura=0;prestige++;power=0;bot=0;presence=0;
-    $("event").textContent="⭐ ¡TRASCENDISTE DE PLANO!";
-    log("⭐ Prestigio "+prestige+" conseguido.");
-    render();
-  }
-};
-
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
-  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active");$(b.dataset.tab).classList.add("active");
-});
-
-const charReq={NPC:0,Sigma:10000,Chad:100000,Master:1000000};
-const zoneReq={Escuela:0,Ciudad:10000,Noche:100000,Dimension:1000000};
-
-document.querySelectorAll("[data-char]").forEach(b=>b.onclick=()=>{
-  let req=charReq[b.dataset.char]; if(aura>=req){character=b.dataset.char;log("🧍 Personaje equipado: "+b.dataset.char);render()}
-  else $("event").textContent="🔒 Necesitás "+fmt(req)+" Aura para desbloquearlo.";
-});
-
-document.querySelectorAll("[data-zone]").forEach(b=>b.onclick=()=>{
-  let req=zoneReq[b.dataset.zone]; 
-  if(aura>=req){
-    zone=b.dataset.zone;
-    bossHp=zoneBosses[zone].hp;
-    log("🗺️ Viajaste a la zona: "+b.dataset.zone+".");
-    render();
-  }
-  else $("event").textContent="🔒 Zona bloqueada. Necesitás "+fmt(req)+" Aura.";
-});
-
-$("bossHit").onclick=()=>{
-  let bInfo=zoneBosses[zone];
-  if(bossHp<=0){bossHp=bInfo.hp;$("bossMsg").textContent="👹 ¡El Jefe regresó con más fuerza!";render();return}
-  let dmg=Math.max(1,Math.floor(clickPower()/5)); bossHp-=dmg; presence=Math.min(100,presence+2);
-  checkAwakening();
-  if(bossHp<=0){
-    let reward=bInfo.hp*2;aura+=reward;
-    $("bossMsg").textContent="🏆 ¡JEFE DERROTADO! +"+fmt(reward)+" Aura";
-    log("👹 Jefe "+bInfo.name+" aniquilado.");
-  } else {
-    $("bossMsg").textContent="💥 Impacto al jefe por "+fmt(dmg)+" de daño.";
-  }
-  render();
-};
-
-$("reset").onclick=()=>{if(confirm("¿Borrar todo el progreso de la partida?")){['v04','v05','v06','v07','v08','v09'].forEach(v=>localStorage.removeItem("farmear_"+v));location.reload()}};
-
-setInterval(()=>{
-  if(bot){aura+=botPower();render()}
-  if(awakenedTimer>0){
-    awakenedTimer--;
-    if(awakenedTimer===0) log("✨ El modo Despertar ha finalizado.");
-    render();
-  }
-},1000);
-
-log("🔥 V0.9 Manos Reales iniciada.");
-render();
-</script>
-</body>
-                                                                                             </html>
-                                                                                             
+  void puppet.offsetWidt
