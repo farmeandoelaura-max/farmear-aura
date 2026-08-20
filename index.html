@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Farmear Aura — V1.0 (Anatomía Real)</title>
+<title>Farmear Aura — V2.0</title>
 
 <style>
 *{box-sizing:border-box}
@@ -60,86 +60,51 @@ h1{ font-size:34px; margin:5px 0; letter-spacing:1px; }
 .farm:active{ transform:scale(.92); }
 
 /* =========================
-   NUEVO PERSONAJE VECTORIAL Y ANATÓMICO
+   CONTENEDOR DE PERSONAJE ILUSTRADO
    ========================= */
 
 .character-stage{
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  margin:12px 0; height:180px;
+  margin:16px 0; height:210px;
 }
 
-.puppet{
-  position:relative; width:100px; height:140px;
-  filter:drop-shadow(0 8px 12px rgba(0,0,0,.6));
-  transform-origin:bottom center;
+.avatar-container{
+  width:140px;
+  height:180px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  filter:drop-shadow(0 10px 15px rgba(0,0,0,.6));
+  transition:transform .15s ease;
 }
 
-/* Cabeza */
-.puppet-head{
-  position:absolute; top:0; left:30px; width:40px; height:42px;
-  background:#fcd34d; border-radius:50%; z-index:4;
-  border:2px solid #b45309;
-}
-.puppet-face{
-  position:absolute; top:12px; left:0; width:100%; text-align:center; font-size:14px; user-select:none;
-}
-.puppet-hat{
-  position:absolute; top:-12px; left:50%; transform:translateX(-50%); font-size:20px; z-index:5;
+.avatar-img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
 }
 
-/* Torso */
-.puppet-torso{
-  position:absolute; top:38px; left:27px; width:46px; height:50px;
-  background:#3b82f6; border-radius:8px 8px 4px 4px; z-index:3;
-  border:2px solid #1d4ed8;
+/* Animaciones al farmear */
+.avatar-container.anim-bounce{ animation:avatarBounce .35s ease-in-out; }
+.avatar-container.anim-awaken{ animation:avatarAwaken .8s ease-in-out; }
+
+@keyframes avatarBounce {
+  0%{ transform:scale(1) translateY(0); }
+  35%{ transform:scale(1.1) translateY(-12px) rotate(-3deg); }
+  70%{ transform:scale(0.95) translateY(4px) rotate(2deg); }
+  100%{ transform:scale(1) translateY(0); }
 }
 
-/* Extremidades Superiores (Brazos) */
-.puppet-arm{
-  position:absolute; top:40px; width:12px; height:42px;
-  background:#fcd34d; border:2px solid #b45309; border-radius:6px; z-index:2;
-  transform-origin:top center;
-}
-.puppet-arm.left{ left:16px; transform:rotate(12deg); }
-.puppet-arm.right{ right:16px; transform:rotate(-12deg); }
-
-.puppet-hand{
-  position:absolute; bottom:-6px; left:-2px; width:12px; height:12px;
-  background:#fcd34d; border:2px solid #b45309; border-radius:50%;
+@keyframes avatarAwaken {
+  0%{ transform:scale(1); filter:brightness(1); }
+  50%{ transform:scale(1.3) translateY(-15px); filter:brightness(1.8) drop-shadow(0 0 25px #ff4fd8); }
+  100%{ transform:scale(1); filter:brightness(1); }
 }
 
-/* Extremidades Inferiores (Piernas) */
-.puppet-leg{
-  position:absolute; top:86px; width:14px; height:46px;
-  background:#1e293b; border:2px solid #0f172a; border-radius:4px; z-index:1;
-  transform-origin:top center;
-}
-.puppet-leg.left{ left:31px; }
-.puppet-leg.right{ right:31px; }
+.avatar-status{ font-size:14px; color:#f8fafc; margin-top:6px; font-weight:bold; }
 
-.puppet-foot{
-  position:absolute; bottom:-4px; left:-4px; width:20px; height:10px;
-  background:#ef4444; border:1px solid #991b1b; border-radius:4px 8px 2px 2px;
-}
-
-.avatar-status{ font-size:13px; color:#cbd5e1; margin-top:8px; font-weight:bold; }
-
-/* ANIMACIONES ARTICULADAS */
-.puppet.anim-hands .puppet-arm.left{ animation:armPunchL .2s ease-in-out; }
-.puppet.anim-hands .puppet-arm.right{ animation:armPunchR .2s ease-in-out .1s; }
-.puppet.anim-legs .puppet-leg.left{ animation:legStepL .2s ease-in-out; }
-.puppet.anim-legs .puppet-leg.right{ animation:legStepR .2s ease-in-out .1s; }
-.puppet.anim-body{ animation:bodyBounce .3s ease-in-out; }
-.puppet.anim-awaken{ animation:awakenFull .8s ease-in-out; }
-
-@keyframes armPunchL { 50%{ transform:rotate(-60deg) translateY(-2px); } }
-@keyframes armPunchR { 50%{ transform:rotate(60deg) translateY(-2px); } }
-@keyframes legStepL { 50%{ transform:rotate(-25deg) translateY(-4px); } }
-@keyframes legStepR { 50%{ transform:rotate(25deg) translateY(-4px); } }
-@keyframes bodyBounce { 35%{ transform:translateY(-10px) scale(1.05); } 70%{ transform:translateY(2px) scale(0.98); } }
-@keyframes awakenFull { 0%{ transform:scale(1); } 50%{ transform:scale(1.3) rotate(5deg); filter:brightness(2); } 100%{ transform:scale(1); } }
-
-/* ESTADÍSTICAS Y MÁS */
+/* ESTADÍSTICAS */
 .stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:10px; }
 .stat{ background:rgba(0,0,0,.3); padding:10px; border-radius:14px; text-align:center; font-size:12px; color:#94a3b8; }
 .stat b{ display:block; font-size:18px; margin-top:4px; color:#fff; }
@@ -188,7 +153,7 @@ h1{ font-size:34px; margin:5px 0; letter-spacing:1px; }
 
 <div class="top">
 <h1>🔥 FARMEAR AURA</h1>
-<div class="sub">V1.0 — Personaje Anatómico Real 😎</div>
+<div class="sub">V2.0 — Personajes Ilustrados Realistas 😎</div>
 </div>
 
 <div class="card">
@@ -199,18 +164,12 @@ h1{ font-size:34px; margin:5px 0; letter-spacing:1px; }
 
 <button class="farm" id="farm">FARMEAR<br>AURA</button>
 
-<!-- PERSONAJE ANATÓMICO EN CAJA -->
+<!-- VISTA DEL PERSONAJE CON IMAGEN/SVG -->
 <div class="character-stage">
-  <div class="puppet" id="puppetBox">
-    <div class="puppet-hat" id="pHat"></div>
-    <div class="puppet-head" id="pHead"><div class="puppet-face" id="pFace">👁️_👁️</div></div>
-    <div class="puppet-torso" id="pTorso"></div>
-    <div class="puppet-arm left" id="pArmL"><div class="puppet-hand"></div></div>
-    <div class="puppet-arm right" id="pArmR"><div class="puppet-hand"></div></div>
-    <div class="puppet-leg left" id="pLegL"><div class="puppet-foot" id="pFootL"></div></div>
-    <div class="puppet-leg right" id="pLegR"><div class="puppet-foot" id="pFootR"></div></div>
+  <div class="avatar-container" id="avatarBox">
+    <div id="avatarSvg" class="avatar-img"></div>
   </div>
-  <div class="avatar-status" id="avatarTitle">NPC en la plaza</div>
+  <div class="avatar-status" id="avatarTitle">NPC de la plaza</div>
 </div>
 
 <div class="stats">
@@ -304,24 +263,130 @@ Escuela:{name:"Celador NPC",hp:100}, Ciudad:{name:"Inspector de Estilo",hp:1000}
 Noche:{name:"Rey del Cringe",hp:10000}, Dimension:{name:"Sombra Cósmica",hp:100000}
 };
 
-/* DISEÑOS ANATÓMICOS POR PERSONAJE */
-const charConfigs={
-NPC:{
-  skin:"#fcd34d", torso:"#3b82f6", legs:"#1e293b", shoes:"#ef4444",
-  face:"😐", hat:"", name:"NPC en la plaza"
-},
-Sigma:{
-  skin:"#fcd34d", torso:"#0f172a", legs:"#334155", shoes:"#000000",
-  face:"😎", hat:"", name:"Sigma Male grindset"
-},
-Chad:{
-  skin:"#eab308", torso:"#dc2626", legs:"#f59e0b", shoes:"#78350f",
-  face:"🗿", hat:"", name:"Gigachad indiscutido"
-},
-Master:{
-  skin:"#a855f7", torso:"#6b21a8", legs:"#3b0764", shoes:"#fde047",
-  face:"✨", hat:"👑", name:"Aura Master supremo"
-}
+/* ILUSTRACIONES SVG VECTORIALES DE PERSONAJES REALISTAS */
+const charSvgData = {
+NPC: `
+<svg viewBox="0 0 100 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <!-- Pelo -->
+  <path d="M 35 25 C 35 10, 65 10, 65 25 Z" fill="#4a2e16"/>
+  <!-- Cabeza -->
+  <ellipse cx="50" cy="30" rx="14" ry="16" fill="#fcd34d"/>
+  <!-- Ojos y Boca -->
+  <circle cx="45" cy="28" r="2" fill="#333"/>
+  <circle cx="55" cy="28" r="2" fill="#333"/>
+  <path d="M 46 36 Q 50 38 54 36" stroke="#333" stroke-width="1.5" fill="none"/>
+  <!-- Cuello -->
+  <rect x="47" y="44" width="6" height="6" fill="#fcd34d"/>
+  <!-- Torso / Camiseta -->
+  <path d="M 32 50 L 68 50 L 64 90 L 36 90 Z" fill="#2563eb"/>
+  <!-- Brazos -->
+  <path d="M 32 50 L 22 78 L 27 80 L 36 55 Z" fill="#2563eb"/>
+  <circle cx="24" cy="82" r="4" fill="#fcd34d"/>
+  <path d="M 68 50 L 78 78 L 73 80 L 64 55 Z" fill="#2563eb"/>
+  <circle cx="76" cy="82" r="4" fill="#fcd34d"/>
+  <!-- Pantalones -->
+  <path d="M 36 90 L 48 90 L 47 125 L 37 125 Z" fill="#1e293b"/>
+  <path d="M 52 90 L 64 90 L 63 125 L 53 125 Z" fill="#1e293b"/>
+  <!-- Zapatillas -->
+  <path d="M 32 125 L 47 125 L 47 132 L 30 132 Z" fill="#ef4444"/>
+  <path d="M 53 125 L 68 125 L 70 132 L 53 132 Z" fill="#ef4444"/>
+</svg>`,
+
+Sigma: `
+<svg viewBox="0 0 100 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cabello peinado -->
+  <path d="M 32 24 C 35 8, 68 12, 68 25 C 60 18, 40 18, 32 24 Z" fill="#291d0e"/>
+  <!-- Cabeza -->
+  <polygon points="36,22 64,22 60,42 50,46 40,42" fill="#e0a96d"/>
+  <!-- Gafas de Sol -->
+  <rect x="40" y="27" width="9" height="6" rx="1" fill="#111"/>
+  <rect x="51" y="27" width="9" height="6" rx="1" fill="#111"/>
+  <line x1="49" y1="29" x2="51" y2="29" stroke="#111" stroke-width="2"/>
+  <!-- Boca Sigma -->
+  <path d="M 45 40 Q 50 39 55 40" stroke="#523111" stroke-width="1.5" fill="none"/>
+  <!-- Traje / Chaqueta elegante -->
+  <path d="M 28 48 L 72 48 L 66 92 L 34 92 Z" fill="#0f172a"/>
+  <!-- Corbata / Camisa -->
+  <polygon points="46,48 54,48 52,68 48,68" fill="#cbd5e1"/>
+  <polygon points="48,50 52,50 51,75 49,75" fill="#dc2626"/>
+  <!-- Brazos con abrigo -->
+  <path d="M 28 48 L 18 78 L 24 80 L 33 54 Z" fill="#0f172a"/>
+  <circle cx="21" cy="82" r="4" fill="#e0a96d"/>
+  <path d="M 72 48 L 82 78 L 76 80 L 67 54 Z" fill="#0f172a"/>
+  <circle cx="79" cy="82" r="4" fill="#e0a96d"/>
+  <!-- Pantalón vestir -->
+  <rect x="36" y="92" width="12" height="34" fill="#334155"/>
+  <rect x="52" y="92" width="12" height="34" fill="#334155"/>
+  <!-- Zapatos negros -->
+  <path d="M 30 126 L 48 126 L 48 133 L 28 133 Z" fill="#000"/>
+  <path d="M 52 126 L 70 126 L 72 133 L 52 133 Z" fill="#000"/>
+</svg>`,
+
+Chad: `
+<svg viewBox="0 0 100 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <!-- Mandíbula Gigachad estructurada -->
+  <polygon points="34,18 66,18 66,30 58,45 50,48 42,45 34,30" fill="#d97706"/>
+  <!-- Pelo alto -->
+  <path d="M 34 18 C 34 5, 66 5, 66 18 Z" fill="#1c1917"/>
+  <!-- Ojos definidos -->
+  <line x1="40" y1="25" x2="46" y2="25" stroke="#451a03" stroke-width="2"/>
+  <line x1="54" y1="25" x2="60" y2="25" stroke="#451a03" stroke-width="2"/>
+  <!-- Barbilla marcada -->
+  <path d="M 46 40 L 50 43 L 54 40" stroke="#78350f" stroke-width="1.5" fill="none"/>
+  <!-- Cuello musculoso -->
+  <rect x="42" y="45" width="16" height="8" fill="#d97706"/>
+  <!-- Pecho / Camiseta tirantes musculosa -->
+  <path d="M 22 52 L 78 52 L 68 92 L 32 92 Z" fill="#dc2626"/>
+  <!-- Pecho musculoso dibujado -->
+  <path d="M 38 60 Q 50 66 62 60" stroke="#991b1b" stroke-width="2" fill="none"/>
+  <!-- Brazos enormes -->
+  <path d="M 22 52 L 10 80 L 18 83 L 30 58 Z" fill="#d97706"/>
+  <circle cx="14" cy="85" r="5" fill="#d97706"/>
+  <path d="M 78 52 L 90 80 L 82 83 L 70 58 Z" fill="#d97706"/>
+  <circle cx="86" cy="85" r="5" fill="#d97706"/>
+  <!-- Pantalón corto -->
+  <rect x="32" y="92" width="16" height="24" fill="#f59e0b"/>
+  <rect x="52" y="92" width="16" height="24" fill="#f59e0b"/>
+  <!-- Piernas corpulentas -->
+  <rect x="35" y="116" width="10" height="12" fill="#d97706"/>
+  <rect x="55" y="116" width="10" height="12" fill="#d97706"/>
+  <!-- Botas -->
+  <rect x="30" y="128" width="16" height="7" fill="#78350f"/>
+  <rect x="54" y="128" width="16" height="7" fill="#78350f"/>
+</svg>`,
+
+Master: `
+<svg viewBox="0 0 100 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <!-- Corona Mística -->
+  <polygon points="38,12 43,2 50,10 57,2 62,12" fill="#fde047"/>
+  <!-- Aura de energía detrás -->
+  <circle cx="50" cy="40" r="32" fill="rgba(168,85,247,0.3)"/>
+  <!-- Cabeza de Dios Místico -->
+  <ellipse cx="50" cy="28" rx="13" ry="15" fill="#c084fc"/>
+  <!-- Ojos brillantes de poder -->
+  <ellipse cx="45" cy="26" rx="3" ry="2" fill="#fff"/>
+  <ellipse cx="55" cy="26" rx="3" ry="2" fill="#fff"/>
+  <!-- Túnica mística cósmica -->
+  <path d="M 26 42 L 74 42 L 80 125 L 20 125 Z" fill="#581c87"/>
+  <!-- Detalle dorado de la túnica -->
+  <path d="M 50 42 L 50 125" stroke="#fde047" stroke-width="3"/>
+  <path d="M 26 42 L 50 70 L 74 42" fill="none" stroke="#fde047" stroke-width="2"/>
+  <!-- Mangas anchas místicas -->
+  <path d="M 26 42 L 10 75 L 22 80 L 32 55 Z" fill="#6b21a8"/>
+  <circle cx="16" cy="80" r="5" fill="#fde047"/>
+  <path d="M 74 42 L 90 75 L 78 80 L 68 55 Z" fill="#6b21a8"/>
+  <circle cx="84" cy="80" r="5" fill="#fde047"/>
+  <!-- Calzado dorado que flota -->
+  <ellipse cx="38" cy="128" rx="10" ry="4" fill="#fde047"/>
+  <ellipse cx="62" cy="128" rx="10" ry="4" fill="#fde047"/>
+</svg>`
+};
+
+const charConfigs = {
+  NPC: { name: "NPC de la plaza" },
+  Sigma: { name: "Sigma Male grindset" },
+  Chad: { name: "Gigachad indiscutido" },
+  Master: { name: "Aura Master supremo" }
 };
 
 const saved = localStorage.getItem("farmear_v10") || localStorage.getItem("farmear_v09");
@@ -363,22 +428,10 @@ function powerCost(){ return Math.floor(100*Math.pow(2.4,power)); }
 function botCost(){ return Math.floor(250*Math.pow(2.7,bot)); }
 
 function updateCharacter(){
+  const svg = charSvgData[character] || charSvgData.NPC;
   const cfg = charConfigs[character] || charConfigs.NPC;
   
-  $("pHead").style.background = cfg.skin;
-  $("pFace").textContent = cfg.face;
-  $("pHat").textContent = cfg.hat;
-  $("pTorso").style.background = cfg.torso;
-  
-  $("pArmL").style.background = cfg.skin;
-  $("pArmR").style.background = cfg.skin;
-  
-  $("pLegL").style.background = cfg.legs;
-  $("pLegR").style.background = cfg.legs;
-  
-  $("pFootL").style.background = cfg.shoes;
-  $("pFootR").style.background = cfg.shoes;
-  
+  $("avatarSvg").innerHTML = svg;
   $("avatarTitle").textContent = cfg.name;
 }
 
@@ -439,164 +492,4 @@ function render(){
   document.querySelectorAll("[data-char]").forEach(b=>{
     b.classList.toggle("active", b.dataset.char===character);
   });
-  document.querySelectorAll("[data-zone]").forEach(b=>{
-    b.classList.toggle("active", b.dataset.zone===zone);
-  });
-
-  updateTheme();
-  save();
-}
-
-function log(msg){
-  const item=document.createElement("div");
-  item.textContent=msg;
-  $("log").prepend(item);
-  while($("log").children.length>12){ $("log").lastChild.remove(); }
-}
-
-function pop(msg){
-  const item=document.createElement("div");
-  item.className="pop";
-  item.textContent=msg;
-  item.style.left=innerWidth/2+"px";
-  item.style.top=innerHeight/2+"px";
-  document.body.appendChild(item);
-  setTimeout(()=>{ item.remove(); },700);
-}
-
-function animateCharacter(){
-  const puppet=$("puppetBox");
-  puppet.classList.remove("anim-hands","anim-legs","anim-body","anim-awaken");
-  void puppet.offsetWidth;
-
-  puppet.classList.add("anim-hands");
-  setTimeout(()=>{ puppet.classList.remove("anim-hands"); puppet.classList.add("anim-legs"); },200);
-  setTimeout(()=>{ puppet.classList.remove("anim-legs"); puppet.classList.add("anim-body"); },400);
-  setTimeout(()=>{ puppet.classList.remove("anim-body"); },650);
-}
-
-function checkAwakening(){
-  if(presence>=100 && awakenedTimer===0){
-    awakenedTimer=15;
-    const puppet=$("puppetBox");
-    puppet.classList.remove("anim-hands","anim-legs","anim-body");
-    void puppet.offsetWidth;
-    puppet.classList.add("anim-awaken");
-    log("🔥 ¡HAS DESPERTADO! Poder x5 durante 15 segundos.");
-    pop("🔥 ¡DESPERTAR!");
-    setTimeout(()=>{ puppet.classList.remove("anim-awaken"); },750);
-  }
-}
-
-function farm(){
-  const gain=clickPower();
-  aura+=gain;
-  presence=Math.min(100,presence+.04);
-  animateCharacter();
-  pop("+"+fmt(gain)+" AURA");
-
-  if(Math.random()<.06) eventTrigger();
-  checkAwakening();
-  render();
-}
-
-function eventTrigger(){
-  if(Math.random()<.75){
-    const bonus=Math.max(20,Math.floor(aura*.1)+10);
-    aura+=bonus;
-    $("event").textContent="🔥 MOMENTO AURA: +"+fmt(bonus);
-    log("🔥 Evento positivo: +"+fmt(bonus)+" Aura");
-  }else{
-    const loss=Math.min(aura,Math.max(5,Math.floor(aura*.05)));
-    aura-=loss;
-    $("event").textContent="💀 AURA NEGATIVA: -"+fmt(loss);
-    log("💀 Evento NPC: -"+fmt(loss)+" Aura");
-  }
-}
-
-$("farm").onclick=farm;
-
-$("buyPower").onclick=()=>{
-  const cost=powerCost();
-  if(aura>=cost){ aura-=cost; power++; log("⚡ Poder de Aura mejorado."); render(); }
-};
-
-$("buyBot").onclick=()=>{
-  const cost=botCost();
-  if(aura>=cost){ aura-=cost; bot++; log("🤖 Aura Bot mejorado."); render(); }
-};
-
-$("prestigeBtn").onclick=()=>{
-  if(aura>=1000000){
-    aura=0; prestige++; power=0; bot=0;
-    $("event").textContent="⭐ ¡TRASCENDISTE DE PLANO!";
-    log("⭐ Prestigio "+prestige+" conseguido.");
-    render();
-  }
-};
-
-document.querySelectorAll(".tab").forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-    document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    $(b.dataset.tab).classList.add("active");
-  };
-});
-
-const charReq={NPC:0, Sigma:10000, Chad:100000, Master:1000000};
-const zoneReq={Escuela:0, Ciudad:10000, Noche:100000, Dimension:1000000};
-
-document.querySelectorAll("[data-char]").forEach(b=>{
-  b.onclick=()=>{
-    const req=charReq[b.dataset.char];
-    if(aura>=req){ character=b.dataset.char; log("🧍 Personaje equipado: "+character); render(); }
-    else{ $("event").textContent="🔒 Necesitás "+fmt(req)+" Aura para desbloquearlo."; }
-  };
-});
-
-document.querySelectorAll("[data-zone]").forEach(b=>{
-  b.onclick=()=>{
-    const req=zoneReq[b.dataset.zone];
-    if(aura>=req){ zone=b.dataset.zone; bossHp=zoneBosses[zone].hp; log("🗺️ Viajaste a: "+zone); render(); }
-    else{ $("event").textContent="🔒 Zona bloqueada. Necesitás "+fmt(req)+" Aura."; }
-  };
-});
-
-$("bossHit").onclick=()=>{
-  if(bossHp<=0){
-    bossHp=zoneBosses[zone].hp;
-    $("bossMsg").textContent="👹 ¡El Jefe regresó con más fuerza!";
-    render(); return;
-  }
-  const damage=Math.max(1,Math.floor(clickPower()/10));
-  bossHp-=damage;
-  presence=Math.min(100,presence+1.5);
-
-  if(bossHp<=0){
-    const reward=500+Math.floor(aura*.15);
-    aura+=reward;
-    $("bossMsg").textContent="🏆 ¡JEFE DERROTADO! +"+fmt(reward)+" Aura";
-    log("👹 Jefe de zona aniquilado.");
-    checkAwakening();
-  }else{
-    $("bossMsg").textContent="💥 Impacto al jefe por "+fmt(damage)+" de daño.";
-  }
-  render();
-};
-
-$("reset").onclick=()=>{
-  if(confirm("¿Borrar todo el progreso de la partida?")){
-    localStorage.clear();
-    location.reload();
-  }
-};
-
-setInterval(()=>{ if(bot){ aura+=botPower(); render(); } },1000);
-setInterval(()=>{ if(awakenedTimer>0){ awakenedTimer--; render(); } },1000);
-
-log("🎮 V1.0 iniciada con anatomía corregida.");
-render();
-</script>
-</body>
-</html>
+  document.querySelectorAll("[
