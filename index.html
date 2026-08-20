@@ -3,261 +3,955 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Farmear Aura — V2.0 Fix</title>
+<title>Farmear Aura — V3.0</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  font-family:system-ui,-apple-system,sans-serif;
+  background:#05040a;
+  color:white;
+  overflow-x:hidden;
+}
 
 body{
-  margin:0;
-  min-height:100vh;
-  font-family:system-ui,-apple-system,sans-serif;
-  background:radial-gradient(circle at top,#29114d,#0b0715 48%,#05040a);
-  color:#fff;
-  transition:background .5s ease;
+  background:
+    radial-gradient(circle at 50% 0%,#32105e,#0b0715 55%,#030208);
 }
 
-body.zone-Escuela{ background:radial-gradient(circle at top,#1e293b,#0f172a 48%,#020617); }
-body.zone-Ciudad{ background:radial-gradient(circle at top,#1b263b,#0d1b2a 48%,#0b090a); }
-body.zone-Noche{ background:radial-gradient(circle at top,#3a0ca3,#10002b 48%,#05010d); }
-body.zone-Dimension{ background:radial-gradient(circle at top,#7209b7,#3a0ca3 48%,#10002b); }
-
-body.awakened{ animation:pulseBg .8s infinite alternate; }
-
-@keyframes pulseBg{
-  0%{filter:brightness(1)}
-  100%{filter:brightness(1.3) hue-rotate(15deg)}
+body.zone-Escuela{
+  background:
+    radial-gradient(circle at 50% 0%,#334155,#0f172a 55%,#020617);
 }
 
-.game{ max-width:540px; margin:auto; padding:16px; }
-.top{text-align:center}
-h1{ font-size:34px; margin:5px 0; letter-spacing:1px; }
-.sub{ color:#cbd5e1; margin-bottom:14px; font-size:14px; }
+body.zone-Ciudad{
+  background:
+    radial-gradient(circle at 50% 0%,#26364d,#0b1728 55%,#05070b);
+}
+
+body.zone-Noche{
+  background:
+    radial-gradient(circle at 50% 0%,#4c1d95,#17052f 55%,#05010d);
+}
+
+body.zone-Dimension{
+  background:
+    radial-gradient(circle at 50% 0%,#a21caf,#4c1d95 50%,#10001e);
+}
+
+body.awakened{
+  animation:pulseBackground .7s infinite alternate;
+}
+
+@keyframes pulseBackground{
+  from{filter:brightness(1)}
+  to{filter:brightness(1.35) hue-rotate(12deg)}
+}
+
+.game{
+  width:100%;
+  max-width:560px;
+  margin:auto;
+  padding:12px;
+}
+
+.top{
+  text-align:center;
+}
+
+h1{
+  margin:5px 0;
+  font-size:32px;
+  letter-spacing:1px;
+  text-shadow:0 0 20px rgba(255,79,216,.4);
+}
+
+.sub{
+  color:#cbd5e1;
+  font-size:13px;
+  margin-bottom:10px;
+}
 
 .card{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:24px;
-  padding:16px;
-  margin:12px 0;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:22px;
+  padding:14px;
+  margin:10px 0;
   box-shadow:0 12px 35px rgba(0,0,0,.5);
-  backdrop-filter:blur(6px);
+  backdrop-filter:blur(8px);
 }
 
-.aura{ font-size:48px; font-weight:900; text-align:center; letter-spacing:-1px; }
-.rank{ text-align:center; font-size:20px; font-weight:bold; margin:2px 0 12px; color:#facc15; }
-.bar{ height:12px; background:rgba(0,0,0,.4); border-radius:20px; overflow:hidden; }
-.fill{ height:100%; width:0; background:linear-gradient(90deg,#9b5cff,#ff4fd8,#ffe66d); transition:.25s; }
-.progress{ text-align:center; color:#94a3b8; font-size:12px; margin-top:6px; }
-
-.farm{
-  display:block; margin:15px auto 5px; width:190px; height:190px; border:0; border-radius:50%;
-  font-size:24px; font-weight:900; color:#fff;
-  background:radial-gradient(circle at 35% 25%, #fff, #ffdf67 8%, #ff55d8 36%, #822dff 66%, #27105a);
-  box-shadow:0 0 35px rgba(166,76,255,.6), 0 0 90px rgba(255,79,216,.3);
-  cursor:pointer; transition:transform .1s;
-}
-.farm:active{ transform:scale(.92); }
-
-/* CONTENEDOR DE PERSONAJE EN VIVO */
-.character-stage{
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  margin:16px 0; min-height:160px;
+.aura{
+  text-align:center;
+  font-size:44px;
+  font-weight:950;
+  text-shadow:0 0 20px rgba(255,230,109,.25);
 }
 
-.avatar-container{
-  width:120px;
-  height:150px;
+.rank{
+  text-align:center;
+  color:#facc15;
+  font-size:19px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.bar{
+  height:11px;
+  background:rgba(0,0,0,.4);
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(
+    90deg,
+    #9b5cff,
+    #ff4fd8,
+    #ffe66d
+  );
+  transition:.2s;
+}
+
+.progress{
+  text-align:center;
+  color:#94a3b8;
+  font-size:11px;
+  margin-top:5px;
+}
+
+/* ==============================
+   ESCENARIO
+============================== */
+
+.game-world{
   position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  filter:drop-shadow(0 10px 15px rgba(0,0,0,.6));
-  transition:transform .15s ease;
+  width:100%;
+  height:370px;
+  margin:14px 0 8px;
+  overflow:hidden;
+  border-radius:24px;
+  border:2px solid rgba(255,255,255,.08);
+  background:
+    radial-gradient(circle at center,rgba(123,57,201,.15),transparent 60%),
+    rgba(0,0,0,.35);
+  box-shadow:
+    inset 0 0 50px rgba(0,0,0,.6),
+    0 0 30px rgba(123,57,201,.12);
+  touch-action:none;
 }
 
-/* PERSONAJES CSS GARANTIZADOS */
-.human-char {
-  position: relative;
-  width: 80px;
-  height: 140px;
+.world-ground{
+  position:absolute;
+  inset:0;
+  opacity:.4;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:40px 40px;
 }
 
-/* Cabeza, Cara y Pelo */
-.human-head {
-  position: absolute;
-  top: 10px;
-  left: 20px;
-  width: 40px;
-  height: 45px;
-  background: #fcd34d;
-  border-radius: 20px 20px 18px 18px;
-  z-index: 2;
+.zone-Escuela .game-world{
+  background:
+    radial-gradient(circle at 50% 50%,#26364d,#111827);
 }
 
-.human-hair {
-  position: absolute;
-  top: -4px;
-  left: -2px;
-  width: 44px;
-  height: 20px;
-  background: #4a2e16;
-  border-radius: 12px 12px 0 0;
+.zone-Ciudad .game-world{
+  background:
+    radial-gradient(circle at 50% 60%,#203b56,#080f1a);
 }
 
-.human-eyes {
-  position: absolute;
-  top: 22px;
-  left: 8px;
-  width: 24px;
-  height: 5px;
-  display: flex;
-  justify-content: space-between;
-}
-.human-eyes::before, .human-eyes::after {
-  content: '';
-  width: 5px;
-  height: 5px;
-  background: #222;
-  border-radius: 50%;
+.zone-Noche .game-world{
+  background:
+    radial-gradient(circle at 50% 50%,#3b1268,#10051e);
 }
 
-.human-mouth {
-  position: absolute;
-  bottom: 8px;
-  left: 14px;
-  width: 12px;
-  height: 2px;
-  background: #222;
+.zone-Dimension .game-world{
+  background:
+    radial-gradient(circle at 50% 50%,#8b1ba7,#28063c);
 }
 
-/* Cuerpo y Ropa */
-.human-torso {
-  position: absolute;
-  top: 52px;
-  left: 15px;
-  width: 50px;
-  height: 45px;
-  background: #2563eb;
-  border-radius: 8px 8px 2px 2px;
-  z-index: 1;
+/* estrellas */
+.star{
+  position:absolute;
+  width:3px;
+  height:3px;
+  border-radius:50%;
+  background:white;
+  opacity:.5;
+  animation:twinkle 1.5s infinite alternate;
 }
 
-/* Brazos */
-.human-arm {
-  position: absolute;
-  top: 54px;
-  width: 10px;
-  height: 38px;
-  background: #2563eb;
-  border-radius: 5px;
-}
-.human-arm.left { left: 3px; }
-.human-arm.right { right: 3px; }
-
-/* Piernas */
-.human-legs {
-  position: absolute;
-  top: 95px;
-  left: 20px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: space-between;
-}
-.human-leg {
-  width: 16px;
-  height: 38px;
-  background: #1e293b;
-  border-radius: 2px 2px 4px 4px;
+@keyframes twinkle{
+  from{opacity:.2;transform:scale(.7)}
+  to{opacity:1;transform:scale(1.3)}
 }
 
-/* VARIACIONES DE PERSONAJES */
+/* ==============================
+   PERSONAJE
+============================== */
+
+.player{
+  position:absolute;
+  width:54px;
+  height:82px;
+  transform:translate(-50%,-50%);
+  z-index:20;
+  transition:filter .1s;
+}
+
+.player-shadow{
+  position:absolute;
+  width:45px;
+  height:10px;
+  left:5px;
+  bottom:0;
+  border-radius:50%;
+  background:rgba(0,0,0,.45);
+  filter:blur(3px);
+}
+
+.player-head{
+  position:absolute;
+  width:31px;
+  height:34px;
+  left:11px;
+  top:4px;
+  border-radius:50%;
+  background:#f6c453;
+  z-index:4;
+}
+
+.player-hair{
+  position:absolute;
+  left:-2px;
+  top:-3px;
+  width:35px;
+  height:15px;
+  border-radius:15px 15px 5px 5px;
+  background:#29170b;
+}
+
+.player-eye{
+  position:absolute;
+  top:17px;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#111;
+}
+
+.player-eye.left{
+  left:7px;
+}
+
+.player-eye.right{
+  right:7px;
+}
+
+.player-body{
+  position:absolute;
+  top:36px;
+  left:7px;
+  width:40px;
+  height:32px;
+  border-radius:10px 10px 5px 5px;
+  background:#2563eb;
+  z-index:3;
+}
+
+.player-arm{
+  position:absolute;
+  width:9px;
+  height:29px;
+  top:38px;
+  border-radius:8px;
+  background:#f6c453;
+  z-index:2;
+}
+
+.player-arm.left{
+  left:0;
+  transform:rotate(8deg);
+}
+
+.player-arm.right{
+  right:0;
+  transform:rotate(-8deg);
+}
+
+.player-leg{
+  position:absolute;
+  width:12px;
+  height:25px;
+  top:65px;
+  border-radius:4px;
+  background:#1e293b;
+  z-index:1;
+}
+
+.player-leg.left{
+  left:13px;
+}
+
+.player-leg.right{
+  right:13px;
+}
+
+.player.running .player-leg.left{
+  animation:runLeft .16s infinite alternate;
+}
+
+.player.running .player-leg.right{
+  animation:runRight .16s infinite alternate;
+}
+
+.player.running .player-arm.left{
+  animation:armLeft .16s infinite alternate;
+}
+
+.player.running .player-arm.right{
+  animation:armRight .16s infinite alternate;
+}
+
+@keyframes runLeft{
+  from{transform:rotate(22deg)}
+  to{transform:rotate(-22deg)}
+}
+
+@keyframes runRight{
+  from{transform:rotate(-22deg)}
+  to{transform:rotate(22deg)}
+}
+
+@keyframes armLeft{
+  from{transform:rotate(-20deg)}
+  to{transform:rotate(20deg)}
+}
+
+@keyframes armRight{
+  from{transform:rotate(20deg)}
+  to{transform:rotate(-20deg)}
+}
 
 /* SIGMA */
-.char-Sigma .human-head { background: #e0a96d; }
-.char-Sigma .human-hair { background: #1e1b18; height: 16px; }
-.char-Sigma .human-torso { background: #0f172a; }
-.char-Sigma .human-arm { background: #0f172a; }
-.char-Sigma .human-leg { background: #334155; }
-.char-Sigma .human-eyes::before, .char-Sigma .human-eyes::after {
-  width: 10px; height: 6px; background: #000; border-radius: 1px;
+
+.player.Sigma .player-head{
+  background:#d99b62;
+}
+
+.player.Sigma .player-hair{
+  background:#111;
+  height:12px;
+}
+
+.player.Sigma .player-body{
+  background:#111827;
+}
+
+.player.Sigma .player-arm{
+  background:#d99b62;
+}
+
+.player.Sigma .player-leg{
+  background:#334155;
 }
 
 /* CHAD */
-.char-Chad .human-head { background: #d97706; border-radius: 8px 8px 20px 20px; }
-.char-Chad .human-hair { background: #1c1917; height: 12px; }
-.char-Chad .human-torso { background: #dc2626; width: 60px; left: 10px; }
-.char-Chad .human-arm { background: #d97706; width: 14px; }
-.char-Chad .human-arm.left { left: -4px; }
-.char-Chad .human-arm.right { right: -4px; }
+
+.player.Chad{
+  transform:translate(-50%,-50%) scale(1.08);
+}
+
+.player.Chad .player-head{
+  background:#d97706;
+  border-radius:9px 9px 18px 18px;
+}
+
+.player.Chad .player-hair{
+  background:#17120f;
+  height:10px;
+}
+
+.player.Chad .player-body{
+  background:#dc2626;
+  width:46px;
+  left:4px;
+}
+
+.player.Chad .player-arm{
+  background:#d97706;
+  width:12px;
+}
 
 /* MASTER */
-.char-Master .human-head { background: #c084fc; }
-.char-Master .human-hair { background: #fde047; height: 8px; border-radius: 50%; }
-.char-Master .human-torso { background: #581c87; border-radius: 12px 12px 0 0; }
-.char-Master .human-arm { background: #6b21a8; }
-.char-Master .human-leg { background: #fde047; }
 
-/* Animaciones al farmear */
-.avatar-container.anim-bounce{ animation:avatarBounce .35s ease-in-out; }
-.avatar-container.anim-awaken{ animation:avatarAwaken .8s ease-in-out; }
-
-@keyframes avatarBounce {
-  0%{ transform:scale(1) translateY(0); }
-  35%{ transform:scale(1.1) translateY(-12px) rotate(-3deg); }
-  70%{ transform:scale(0.95) translateY(4px) rotate(2deg); }
-  100%{ transform:scale(1) translateY(0); }
+.player.Master{
+  transform:translate(-50%,-50%) scale(1.12);
+  filter:drop-shadow(0 0 15px #e879f9);
 }
 
-@keyframes avatarAwaken {
-  0%{ transform:scale(1); filter:brightness(1); }
-  50%{ transform:scale(1.3) translateY(-15px); filter:brightness(1.8) drop-shadow(0 0 25px #ff4fd8); }
-  100%{ transform:scale(1); filter:brightness(1); }
+.player.Master .player-head{
+  background:#c084fc;
 }
 
-.avatar-status{ font-size:14px; color:#f8fafc; margin-top:8px; font-weight:bold; }
+.player.Master .player-hair{
+  background:#fde047;
+  height:9px;
+}
 
-/* ESTADÍSTICAS */
-.stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:10px; }
-.stat{ background:rgba(0,0,0,.3); padding:10px; border-radius:14px; text-align:center; font-size:12px; color:#94a3b8; }
-.stat b{ display:block; font-size:18px; margin-top:4px; color:#fff; }
+.player.Master .player-body{
+  background:#581c87;
+}
 
-.tabs{ display:flex; gap:7px; margin-bottom:12px; }
-.tab{ flex:1; padding:11px; border:0; border-radius:12px; background:rgba(255,255,255,.05); color:#94a3b8; font-weight:800; cursor:pointer; }
-.tab.active{ background:#7b39c9; color:white; }
-.panel{ display:none; }
-.panel.active{ display:block; }
+.player.Master .player-arm{
+  background:#c084fc;
+}
 
-.shopitem{ display:flex; align-items:center; justify-content:space-between; gap:10px; background:rgba(0,0,0,.25); padding:12px; border-radius:14px; margin:8px 0; text-align:left; }
-.shopitem small{ color:#94a3b8; }
-.buy{ border:0; border-radius:10px; padding:10px 14px; background:#a13fe0; color:white; font-weight:900; white-space:nowrap; cursor:pointer; }
-.buy:disabled{ opacity:.3; cursor:not-allowed; }
-.badge-soon{ background:rgba(255,255,255,.1); color:#cbd5e1; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; }
+.player.Master .player-leg{
+  background:#fde047;
+}
 
-.event{ text-align:center; min-height:40px; padding:12px; border-radius:14px; background:rgba(255,255,255,.03); margin-top:12px; color:#e2e8f0; font-size:14px; }
-.log{ font-size:12px; color:#94a3b8; max-height:90px; overflow:auto; }
-.log div{ padding:4px 0; border-bottom:1px solid rgba(255,255,255,.03); }
-.reset{ display:block; margin:15px auto; background:transparent; color:#64748b; border:0; border-radius:10px; padding:8px 12px; cursor:pointer; font-size:12px; }
+/* aura del jugador */
 
-.zoneGrid, .charGrid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; }
-.choice{ border:1px solid rgba(255,255,255,.08); background:rgba(0,0,0,.3); color:#fff; border-radius:14px; padding:12px; text-align:left; cursor:pointer; }
-.choice strong{ display:block; font-size:15px; }
-.choice small{ color:#94a3b8; }
-.choice.active{ border-color:#d05cff; box-shadow:0 0 18px rgba(166,60,255,.3); background:rgba(123,57,201,.15); }
+.player-aura{
+  position:absolute;
+  inset:-18px;
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    rgba(255,255,255,.15),
+    rgba(255,79,216,.12),
+    transparent 70%
+  );
+  animation:playerAura 1.2s infinite alternate;
+  pointer-events:none;
+}
 
-.presence-box{ background:linear-gradient(135deg,rgba(123,57,201,.2),rgba(0,0,0,.4)); border:1px solid rgba(166,76,255,.3); }
-.presence-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-weight:900; font-size:18px; }
-.presbar{ height:10px; background:rgba(0,0,0,.4); border-radius:20px; overflow:hidden; }
-.presfill{ height:100%; width:0; background:linear-gradient(90deg,#5de7ff,#d55cff,#ffe66d); transition:.3s; }
-.notice{ padding:8px; border-radius:10px; background:rgba(0,0,0,.2); color:#cbd5e1; text-align:center; margin-top:8px; font-size:13px; }
+@keyframes playerAura{
+  from{transform:scale(.85);opacity:.4}
+  to{transform:scale(1.15);opacity:.9}
+}
 
-.boss{ background:linear-gradient(135deg,#240c38,#0b0512); border:1px solid rgba(169,76,255,.3); text-align:center; }
-.boss h3{ margin:5px 0 4px; font-size:20px; color:#f43f5e; }
-.boss button{ margin-top:10px; background:#e11d48; }
+/* ==============================
+   ORBES
+============================== */
 
-.pop{ position:fixed; pointer-events:none; font-weight:900; font-size:22px; animation:rise .7s forwards; color:#facc15; text-shadow:0 2px 10px rgba(0,0,0,.8); z-index:9999; }
-@keyframes rise{ to{ opacity:0; transform:translate(-50%,-90px) scale(1.2); } }
+.orb{
+  position:absolute;
+  width:28px;
+  height:28px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  z-index:10;
+  cursor:pointer;
+  box-shadow:
+    0 0 12px currentColor,
+    0 0 30px currentColor;
+  animation:orbFloat 1s infinite alternate;
+}
+
+.orb::after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:8px;
+  top:5px;
+  left:6px;
+  border-radius:50%;
+  background:white;
+  opacity:.8;
+}
+
+.orb.normal{
+  background:#9b5cff;
+  color:#9b5cff;
+}
+
+.orb.rare{
+  width:34px;
+  height:34px;
+  background:#22d3ee;
+  color:#22d3ee;
+}
+
+.orb.legendary{
+  width:43px;
+  height:43px;
+  background:#ffe66d;
+  color:#ffe66d;
+  animation:
+    orbFloat .7s infinite alternate,
+    legendary .8s infinite alternate;
+}
+
+@keyframes orbFloat{
+  from{transform:translate(-50%,-50%) translateY(-3px)}
+  to{transform:translate(-50%,-50%) translateY(5px)}
+}
+
+@keyframes legendary{
+  from{filter:brightness(1)}
+  to{filter:brightness(1.7)}
+}
+
+/* ==============================
+   JEFE
+============================== */
+
+.boss-world{
+  position:absolute;
+  width:65px;
+  height:75px;
+  transform:translate(-50%,-50%);
+  z-index:15;
+  transition:.2s;
+}
+
+.boss-body{
+  position:absolute;
+  width:58px;
+  height:55px;
+  bottom:0;
+  left:4px;
+  border-radius:45% 45% 25% 25%;
+  background:linear-gradient(135deg,#ef4444,#7f1d1d);
+  box-shadow:0 0 25px rgba(239,68,68,.55);
+}
+
+.boss-eye{
+  position:absolute;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#ffe66d;
+  top:23px;
+  z-index:2;
+  box-shadow:0 0 8px #ffe66d;
+}
+
+.boss-eye.left{
+  left:18px;
+}
+
+.boss-eye.right{
+  right:18px;
+}
+
+.boss-horn{
+  position:absolute;
+  width:16px;
+  height:28px;
+  background:#fca5a5;
+  top:0;
+  border-radius:10px 10px 3px 3px;
+}
+
+.boss-horn.left{
+  left:7px;
+  transform:rotate(-25deg);
+}
+
+.boss-horn.right{
+  right:7px;
+  transform:rotate(25deg);
+}
+
+/* ==============================
+   PARTICULAS
+============================== */
+
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:50;
+  animation:particle .7s forwards;
+}
+
+@keyframes particle{
+  to{
+    opacity:0;
+    transform:translate(var(--dx),var(--dy)) scale(.2);
+  }
+}
+
+.damage{
+  position:absolute;
+  z-index:80;
+  font-weight:950;
+  color:#ffe66d;
+  text-shadow:0 2px 8px black;
+  animation:damage .8s forwards;
+  pointer-events:none;
+}
+
+@keyframes damage{
+  to{
+    opacity:0;
+    transform:translateY(-50px) scale(1.3);
+  }
+}
+
+/* ==============================
+   CONTROLES
+============================== */
+
+.controls{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:5px;
+}
+
+.joystick{
+  position:relative;
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  background:rgba(255,255,255,.07);
+  border:2px solid rgba(255,255,255,.1);
+  touch-action:none;
+}
+
+.stick{
+  position:absolute;
+  width:48px;
+  height:48px;
+  left:31px;
+  top:31px;
+  border-radius:50%;
+  background:rgba(255,255,255,.18);
+  border:2px solid rgba(255,255,255,.15);
+}
+
+.actionButtons{
+  display:flex;
+  gap:10px;
+}
+
+.action{
+  width:75px;
+  height:75px;
+  border:0;
+  border-radius:50%;
+  font-size:12px;
+  font-weight:950;
+  color:white;
+  background:linear-gradient(135deg,#7b39c9,#e83fbb);
+  box-shadow:0 0 20px rgba(214,70,255,.35);
+}
+
+.action:active{
+  transform:scale(.9);
+}
+
+.action.attack{
+  background:linear-gradient(135deg,#dc2626,#f97316);
+}
+
+.action.skill{
+  background:linear-gradient(135deg,#0891b2,#7c3aed);
+}
+
+/* ==============================
+   STATS
+============================== */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  margin-top:10px;
+}
+
+.stat{
+  background:rgba(0,0,0,.28);
+  padding:9px 5px;
+  border-radius:13px;
+  text-align:center;
+  font-size:10px;
+  color:#94a3b8;
+}
+
+.stat b{
+  display:block;
+  font-size:16px;
+  color:white;
+  margin-top:3px;
+}
+
+/* ==============================
+   RESTO UI
+============================== */
+
+.event{
+  text-align:center;
+  min-height:38px;
+  padding:10px;
+  border-radius:13px;
+  background:rgba(255,255,255,.035);
+  margin-top:10px;
+  color:#e2e8f0;
+  font-size:13px;
+}
+
+.presence-box{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(123,57,201,.2),
+      rgba(0,0,0,.4)
+    );
+}
+
+.presence-header{
+  display:flex;
+  justify-content:space-between;
+  font-weight:900;
+}
+
+.presbar{
+  height:10px;
+  background:rgba(0,0,0,.4);
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:7px;
+}
+
+.presfill{
+  height:100%;
+  width:0;
+  background:linear-gradient(
+    90deg,
+    #5de7ff,
+    #d55cff,
+    #ffe66d
+  );
+  transition:.3s;
+}
+
+.notice{
+  padding:8px;
+  border-radius:10px;
+  background:rgba(0,0,0,.2);
+  color:#cbd5e1;
+  text-align:center;
+  margin-top:8px;
+  font-size:12px;
+}
+
+.tabs{
+  display:flex;
+  gap:7px;
+  margin-bottom:10px;
+}
+
+.tab{
+  flex:1;
+  border:0;
+  border-radius:11px;
+  padding:10px;
+  background:rgba(255,255,255,.05);
+  color:#94a3b8;
+  font-weight:900;
+}
+
+.tab.active{
+  background:#7b39c9;
+  color:white;
+}
+
+.panel{
+  display:none;
+}
+
+.panel.active{
+  display:block;
+}
+
+.shopitem{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  background:rgba(0,0,0,.25);
+  padding:11px;
+  border-radius:13px;
+  margin:7px 0;
+}
+
+.shopitem small{
+  color:#94a3b8;
+}
+
+.buy{
+  border:0;
+  border-radius:10px;
+  padding:9px 12px;
+  background:#a13fe0;
+  color:white;
+  font-weight:900;
+}
+
+.buy:disabled{
+  opacity:.3;
+}
+
+.badge-soon{
+  background:rgba(255,255,255,.1);
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:11px;
+}
+
+.zoneGrid,
+.charGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.choice{
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(0,0,0,.3);
+  color:white;
+  border-radius:13px;
+  padding:11px;
+  text-align:left;
+}
+
+.choice strong{
+  display:block;
+  font-size:14px;
+}
+
+.choice small{
+  color:#94a3b8;
+}
+
+.choice.active{
+  border-color:#d05cff;
+  box-shadow:0 0 18px rgba(166,60,255,.3);
+  background:rgba(123,57,201,.15);
+}
+
+.boss-card{
+  background:linear-gradient(
+    135deg,
+    rgba(100,10,30,.35),
+    rgba(0,0,0,.4)
+  );
+  border:1px solid rgba(239,68,68,.25);
+}
+
+.boss-card h3{
+  margin:2px 0 7px;
+  color:#f43f5e;
+}
+
+.log{
+  font-size:11px;
+  color:#94a3b8;
+  max-height:100px;
+  overflow:auto;
+}
+
+.log div{
+  padding:4px 0;
+  border-bottom:1px solid rgba(255,255,255,.03);
+}
+
+.reset{
+  display:block;
+  margin:12px auto 0;
+  border:0;
+  background:transparent;
+  color:#64748b;
+  font-size:11px;
+}
+
+.pop{
+  position:fixed;
+  pointer-events:none;
+  z-index:9999;
+  font-size:22px;
+  font-weight:950;
+  color:#ffe66d;
+  text-shadow:0 2px 10px black;
+  animation:popRise .8s forwards;
+}
+
+@keyframes popRise{
+  to{
+    opacity:0;
+    transform:translateY(-80px) scale(1.3);
+  }
+}
+
+.combo{
+  position:absolute;
+  top:12px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:90;
+  font-size:17px;
+  font-weight:950;
+  color:#ffe66d;
+  text-shadow:0 0 12px #ff4fd8;
+  pointer-events:none;
+}
+
+.world-label{
+  position:absolute;
+  left:12px;
+  top:12px;
+  z-index:90;
+  padding:5px 9px;
+  border-radius:9px;
+  background:rgba(0,0,0,.35);
+  font-size:11px;
+  color:#cbd5e1;
+}
+
+/* responsive */
+
+@media(max-width:390px){
+  .game{
+    padding:8px;
+  }
+
+  .game-world{
+    height:330px;
+  }
+
+  .joystick{
+    width:95px;
+    height:95px;
+  }
+
+  .stick{
+    left:25px;
+    top:25px;
+  }
+
+  .action{
+    width:67px;
+    height:67px;
+  }
+}
 </style>
 </head>
 
@@ -267,336 +961,1926 @@ h1{ font-size:34px; margin:5px 0; letter-spacing:1px; }
 
 <div class="top">
 <h1>🔥 FARMEAR AURA</h1>
-<div class="sub">V2.0 — Personaje Garantizado 😎</div>
+<div class="sub">V3.0 — AURA WORLD</div>
 </div>
 
 <div class="card">
+
 <div class="aura" id="aura">0</div>
 <div class="rank" id="rank">NPC</div>
-<div class="bar"><div class="fill" id="fill"></div></div>
+
+<div class="bar">
+  <div class="fill" id="fill"></div>
+</div>
+
 <div class="progress" id="progress"></div>
 
-<button class="farm" id="farm">FARMEAR<br>AURA</button>
+<!-- MUNDO -->
 
-<!-- VISTA DEL PERSONAJE HTML PURO -->
-<div class="character-stage">
-  <div class="avatar-container" id="avatarBox">
-    <div class="human-char char-NPC" id="humanAvatar">
-      <div class="human-head">
-        <div class="human-hair"></div>
-        <div class="human-eyes"></div>
-        <div class="human-mouth"></div>
-      </div>
-      <div class="human-torso"></div>
-      <div class="human-arm left"></div>
-      <div class="human-arm right"></div>
-      <div class="human-legs">
-        <div class="human-leg"></div>
-        <div class="human-leg"></div>
-      </div>
-    </div>
-  </div>
-  <div class="avatar-status" id="avatarTitle">NPC de la plaza</div>
+<div class="game-world" id="world">
+
+<div class="world-ground"></div>
+
+<div class="world-label" id="worldLabel">
+🏫 ESCUELA
+</div>
+
+<div class="combo" id="combo"></div>
+
+<!-- PERSONAJE -->
+
+<div class="player" id="player">
+
+<div class="player-aura"></div>
+
+<div class="player-head">
+  <div class="player-hair"></div>
+  <div class="player-eye left"></div>
+  <div class="player-eye right"></div>
+</div>
+
+<div class="player-body"></div>
+
+<div class="player-arm left"></div>
+<div class="player-arm right"></div>
+
+<div class="player-leg left"></div>
+<div class="player-leg right"></div>
+
+<div class="player-shadow"></div>
+
+</div>
+
+<!-- JEFE -->
+
+<div class="boss-world" id="bossWorld">
+
+<div class="boss-horn left"></div>
+<div class="boss-horn right"></div>
+
+<div class="boss-body"></div>
+
+<div class="boss-eye left"></div>
+<div class="boss-eye right"></div>
+
+</div>
+
+</div>
+
+<!-- CONTROLES -->
+
+<div class="controls">
+
+<div class="joystick" id="joystick">
+  <div class="stick" id="stick"></div>
+</div>
+
+<div class="actionButtons">
+
+<button class="action attack" id="attack">
+⚔️<br>ATACAR
+</button>
+
+<button class="action skill" id="skill">
+🔥<br>HABILIDAD
+</button>
+
+</div>
+
 </div>
 
 <div class="stats">
-<div class="stat">⚡ Por toque <b id="perClick">+1</b></div>
-<div class="stat">🤖 Por segundo <b id="auto">0</b></div>
+
+<div class="stat">
+⚡ POR ORBE
+<b id="perClick">+1</b>
 </div>
 
-<div class="event" id="event">Empezá a farmear para despertar tu Presencia.</div>
+<div class="stat">
+🤖 AUTO
+<b id="auto">0/s</b>
 </div>
+
+<div class="stat">
+🔥 COMBO
+<b id="comboStat">x0</b>
+</div>
+
+</div>
+
+<div class="event" id="event">
+Movete por el escenario y recolectá Aura.
+</div>
+
+</div>
+
+<!-- PRESENCIA -->
 
 <div class="card presence-box">
+
 <div class="presence-header">
 <span>🧠 Presencia</span>
 <span><b id="presence">0</b>%</span>
 </div>
-<div class="presbar"><div class="presfill" id="presfill"></div></div>
-<div class="notice" id="presenceMsg">Tu presencia todavía es de NPC.</div>
+
+<div class="presbar">
+<div class="presfill" id="presfill"></div>
 </div>
 
+<div class="notice" id="presenceMsg">
+Tu presencia todavía es de NPC.
+</div>
+
+</div>
+
+<!-- TIENDA -->
+
 <div class="card">
+
 <div class="tabs">
-<button class="tab active" data-tab="shop">🛒 Tienda</button>
-<button class="tab" data-tab="prestige">⭐ Trascender</button>
+
+<button class="tab active" data-tab="shop">
+🛒 Tienda
+</button>
+
+<button class="tab" data-tab="prestige">
+⭐ Trascender
+</button>
+
 </div>
 
 <div id="shop" class="panel active">
+
 <div class="shopitem">
-<div>⚡ Poder de Aura<br><small>Nivel <span id="powerLv">0</span> · mejora tu toque</small></div>
-<button class="buy" id="buyPower"></button>
+
+<div>
+⚡ Poder de Aura
+<br>
+<small>
+Nivel <span id="powerLv">0</span>
+</small>
 </div>
+
+<button class="buy" id="buyPower">
+100
+</button>
+
+</div>
+
 <div class="shopitem">
-<div>🤖 Aura Bot<br><small>Nivel <span id="botLv">0</span> · farmea automático</small></div>
-<button class="buy" id="buyBot"></button>
+
+<div>
+🤖 Aura Bot
+<br>
+<small>
+Nivel <span id="botLv">0</span>
+</small>
 </div>
+
+<button class="buy" id="buyBot">
+250
+</button>
+
+</div>
+
 <div class="shopitem">
-<div>💎 Gemas Premium<br><small>Items exclusivos y ventajas</small></div>
-<span class="badge-soon">Próximamente</span>
+
+<div>
+💎 Gemas Premium
+<br>
+<small>
+Items exclusivos
+</small>
 </div>
+
+<span class="badge-soon">
+PRÓXIMAMENTE
+</span>
+
+</div>
+
 </div>
 
 <div id="prestige" class="panel">
-<p>Al llegar a <b>1.000.000 Aura</b> podés trascender de plano.</p>
-<p>⭐ Prestigios: <b id="prestigeLv">0</b><br>⚡ Multiplicador permanente: <b id="prestigeMult">x1</b></p>
-<button class="buy" id="prestigeBtn">TRASCENDER</button>
-</div>
+
+<p>
+Al llegar a <b>1.000.000 Aura</b>
+podés trascender.
+</p>
+
+<p>
+⭐ Prestigios:
+<b id="prestigeLv">0</b>
+</p>
+
+<p>
+⚡ Multiplicador:
+<b id="prestigeMult">x1</b>
+</p>
+
+<button class="buy" id="prestigeBtn">
+TRASCENDER
+</button>
+
 </div>
 
+</div>
+
+<!-- PERSONAJES -->
+
 <div class="card">
-<h3>🧍 Personaje Actual</h3>
+
+<h3>🧍 Personaje</h3>
+
 <div class="charGrid">
-<button class="choice active" data-char="NPC"><strong>🧑 NPC</strong><small>Gratis · x1 Aura</small></button>
-<button class="choice" data-char="Sigma"><strong>😎 Sigma</strong><small>10k Aura · x1,10</small></button>
-<button class="choice" data-char="Chad"><strong>🗿 Chad</strong><small>100k Aura · x1,25</small></button>
-<button class="choice" data-char="Master"><strong>👑 Aura Master</strong><small>1M Aura · x1,50</small></button>
-</div>
+
+<button class="choice active" data-char="NPC">
+<strong>🧑 NPC</strong>
+<small>Gratis · x1</small>
+</button>
+
+<button class="choice" data-char="Sigma">
+<strong>😎 Sigma</strong>
+<small>10k · x1,10</small>
+</button>
+
+<button class="choice" data-char="Chad">
+<strong>🗿 Chad</strong>
+<small>100k · x1,25</small>
+</button>
+
+<button class="choice" data-char="Master">
+<strong>👑 Aura Master</strong>
+<small>1M · x1,50</small>
+</button>
+
 </div>
 
+</div>
+
+<!-- ZONAS -->
+
 <div class="card">
-<h3>🗺️ Escenarios — Zonas</h3>
+
+<h3>🗺️ Zonas</h3>
+
 <div class="zoneGrid">
-<button class="choice active" data-zone="Escuela"><strong>🏫 Escuela</strong><small>Zona inicial</small></button>
-<button class="choice" data-zone="Ciudad"><strong>🏙️ Ciudad</strong><small>10.000 Aura</small></button>
-<button class="choice" data-zone="Noche"><strong>🌃 Ciudad Nocturna</strong><small>100.000 Aura</small></button>
-<button class="choice" data-zone="Dimension"><strong>🌌 Dimensión Aura</strong><small>1.000.000 Aura</small></button>
-</div>
+
+<button class="choice active" data-zone="Escuela">
+<strong>🏫 Escuela</strong>
+<small>Inicial</small>
+</button>
+
+<button class="choice" data-zone="Ciudad">
+<strong>🏙️ Ciudad</strong>
+<small>10.000 Aura</small>
+</button>
+
+<button class="choice" data-zone="Noche">
+<strong>🌃 Noche</strong>
+<small>100.000 Aura</small>
+</button>
+
+<button class="choice" data-zone="Dimension">
+<strong>🌌 Dimensión</strong>
+<small>1.000.000 Aura</small>
+</button>
+
 </div>
 
-<div class="card boss">
-<h3>👹 JEFE: <span id="bossName">NPC SUPREMO</span></h3>
-<div>Resistencia: <b id="bossHp">100</b> / <span id="bossMaxHp">100</span></div>
-<div class="notice" id="bossMsg">Atacá con tu Aura para dominar el escenario.</div>
-<button class="buy" id="bossHit">ATACAR JEFE</button>
 </div>
+
+<!-- JEFE -->
+
+<div class="card boss-card">
+
+<h3>
+👹 JEFE:
+<span id="bossName">CELADOR NPC</span>
+</h3>
+
+<div style="text-align:center">
+
+Resistencia:
+<b id="bossHp">100</b>
+/
+<span id="bossMaxHp">100</span>
+
+</div>
+
+<div class="notice" id="bossMsg">
+Acercate al jefe y atacalo.
+</div>
+
+</div>
+
+<!-- LOG -->
 
 <div class="card">
+
 <div class="log" id="log"></div>
-<button class="reset" id="reset">Reiniciar partida</button>
+
+<button class="reset" id="reset">
+Reiniciar partida
+</button>
+
 </div>
 
 </div>
 
 <script>
+
+/* ========================================
+   CONFIGURACIÓN
+======================================== */
+
 const ranks=[
-{name:"NPC",need:0}, {name:"Con Presencia",need:100}, {name:"Aura Master",need:1000},
-{name:"Chad",need:10000}, {name:"Leyenda",need:100000}, {name:"Dios del Aura",need:1000000},
-{name:"Entidad Cósmica",need:10000000}
+ {name:"NPC",need:0},
+ {name:"Con Presencia",need:100},
+ {name:"Aura Master",need:1000},
+ {name:"Chad",need:10000},
+ {name:"Leyenda",need:100000},
+ {name:"Dios del Aura",need:1000000},
+ {name:"Entidad Cósmica",need:10000000}
 ];
 
-const zoneBosses={
-Escuela:{name:"Celador NPC",hp:100}, Ciudad:{name:"Inspector de Estilo",hp:1000},
-Noche:{name:"Rey del Cringe",hp:10000}, Dimension:{name:"Sombra Cósmica",hp:100000}
+const zones={
+ Escuela:{
+   name:"Celador NPC",
+   hp:100,
+   multiplier:1
+ },
+ Ciudad:{
+   name:"Inspector de Estilo",
+   hp:1000,
+   multiplier:1.5
+ },
+ Noche:{
+   name:"Rey del Cringe",
+   hp:10000,
+   multiplier:2
+ },
+ Dimension:{
+   name:"Sombra Cósmica",
+   hp:100000,
+   multiplier:4
+ }
 };
 
-const charConfigs = {
-  NPC: { name: "NPC de la plaza" },
-  Sigma: { name: "Sigma Male grindset" },
-  Chad: { name: "Gigachad indiscutido" },
-  Master: { name: "Aura Master supremo" }
+const characters={
+ NPC:{
+   name:"NPC de la plaza",
+   multiplier:1
+ },
+ Sigma:{
+   name:"Sigma Male grindset",
+   multiplier:1.1
+ },
+ Chad:{
+   name:"Gigachad indiscutido",
+   multiplier:1.25
+ },
+ Master:{
+   name:"Aura Master supremo",
+   multiplier:1.5
+ }
 };
 
-const saved = localStorage.getItem("farmear_v10") || localStorage.getItem("farmear_v09");
-const state = JSON.parse(saved||"{}");
+const charReq={
+ NPC:0,
+ Sigma:10000,
+ Chad:100000,
+ Master:1000000
+};
 
-let aura = state.aura||0;
-let power = state.power||0;
-let bot = state.bot||0;
-let prestige = state.prestige||0;
-let presence = state.presence||0;
-let character = state.character||"NPC";
-let zone = state.zone||"Escuela";
-let bossHp = state.bossHp??100;
-let awakenedTimer = 0;
+const zoneReq={
+ Escuela:0,
+ Ciudad:10000,
+ Noche:100000,
+ Dimension:1000000
+};
+
+/* ========================================
+   ESTADO
+======================================== */
+
+const saved=
+localStorage.getItem("farmear_aura_v3");
+
+const state=JSON.parse(saved||"{}");
+
+let aura=state.aura||0;
+let power=state.power||0;
+let bot=state.bot||0;
+let prestige=state.prestige||0;
+let presence=state.presence||0;
+
+let character=state.character||"NPC";
+let zone=state.zone||"Escuela";
+
+let bossHp=
+state.bossHp ??
+zones[zone].hp;
+
+let playerX=state.playerX||50;
+let playerY=state.playerY||55;
+
+let combo=0;
+let comboTimer=0;
+
+let awakenedTimer=0;
+
+let orbs=[];
+
+let keys={};
+
+let moving=false;
+
+let lastTime=performance.now();
 
 const $=id=>document.getElementById(id);
-const fmt=n=>Math.floor(n).toLocaleString("es-AR");
+
+const fmt=n=>
+Math.floor(n).toLocaleString("es-AR");
+
+/* ========================================
+   GUARDADO
+======================================== */
 
 function save(){
-  localStorage.setItem("farmear_v10", JSON.stringify({
-    aura, power, bot, prestige, presence, character, zone, bossHp
-  }));
+
+ localStorage.setItem(
+   "farmear_aura_v3",
+   JSON.stringify({
+     aura,
+     power,
+     bot,
+     prestige,
+     presence,
+     character,
+     zone,
+     bossHp,
+     playerX,
+     playerY
+   })
+ );
+
 }
+
+/* ========================================
+   MULTIPLICADORES
+======================================== */
+
+function prestigeMultiplier(){
+
+ return 1+(prestige*.5);
+
+}
+
+function characterMultiplier(){
+
+ return characters[character].multiplier;
+
+}
+
+function zoneMultiplier(){
+
+ return zones[zone].multiplier;
+
+}
+
+function awakenMultiplier(){
+
+ return awakenedTimer>0?5:1;
+
+}
+
+function comboMultiplier(){
+
+ return 1+Math.min(combo*.05,.5);
+
+}
+
+function auraPerOrb(){
+
+ return Math.max(
+   1,
+   (1+power)
+   *prestigeMultiplier()
+   *characterMultiplier()
+   *zoneMultiplier()
+   *awakenMultiplier()
+   *comboMultiplier()
+ );
+
+}
+
+function autoPower(){
+
+ return bot
+ *prestigeMultiplier()
+ *zoneMultiplier();
+
+}
+
+function powerCost(){
+
+ return Math.floor(
+   100*Math.pow(2.4,power)
+ );
+
+}
+
+function botCost(){
+
+ return Math.floor(
+   250*Math.pow(2.7,bot)
+ );
+
+}
+
+/* ========================================
+   RANGO
+======================================== */
 
 function getRank(){
-  let current=ranks[0];
-  for(const item of ranks){ if(aura>=item.need) current=item; }
-  return current;
+
+ let current=ranks[0];
+
+ for(const r of ranks){
+
+   if(aura>=r.need)
+     current=r;
+
+ }
+
+ return current;
+
 }
 
-function getNextRank(){ return ranks.find(item=>item.need>aura); }
-function prestigeMultiplier(){ return 1+(prestige*.5); }
-function charMult(){ return character==="Sigma"?1.1 : character==="Chad"?1.25 : character==="Master"?1.5 : 1; }
-function awakenMult(){ return awakenedTimer>0 ? 5 : 1; }
-function clickPower(){ return (1+power)*prestigeMultiplier()*charMult()*awakenMult(); }
-function botPower(){ return bot*prestigeMultiplier(); }
+function getNextRank(){
 
-function powerCost(){ return Math.floor(100*Math.pow(2.4,power)); }
-function botCost(){ return Math.floor(250*Math.pow(2.7,bot)); }
+ return ranks.find(
+   r=>r.need>aura
+ );
 
-function updateCharacter(){
-  const cfg = charConfigs[character] || charConfigs.NPC;
-  $("humanAvatar").className = "human-char char-" + character;
-  $("avatarTitle").textContent = cfg.name;
 }
 
-function updateTheme(){
-  document.body.className = "zone-" + zone + (awakenedTimer>0 ?" awakened" :"");
-  updateCharacter();
-}
+/* ========================================
+   RENDER
+======================================== */
 
 function render(){
-  const r=getRank();
-  const n=getNextRank();
-  const boss=zoneBosses[zone];
 
-  $("aura").textContent = fmt(aura);
-  $("rank").textContent = r.name;
-  $("perClick").textContent = "+"+fmt(clickPower());
-  $("auto").textContent = fmt(botPower())+"/s";
+ const rank=getRank();
+ const next=getNextRank();
 
-  if(n){
-    const percentage=((aura-r.need)/(n.need-r.need))*100;
-    $("fill").style.width=Math.min(100,percentage)+"%";
-    $("progress").textContent=fmt(aura)+" / "+fmt(n.need)+" Aura";
-  }else{
-    $("fill").style.width="100%";
-    $("progress").textContent="🔥 NIVEL MÁXIMO";
-  }
+ $("aura").textContent=fmt(aura);
 
-  $("powerLv").textContent=power;
-  $("botLv").textContent=bot;
-  $("prestigeLv").textContent=prestige;
-  $("prestigeMult").textContent="x"+prestigeMultiplier().toFixed(1);
+ $("rank").textContent=rank.name;
 
-  $("buyPower").textContent=fmt(powerCost())+" Aura";
-  $("buyPower").disabled=aura<powerCost();
-  $("buyBot").textContent=fmt(botCost())+" Aura";
-  $("buyBot").disabled=aura<botCost();
-  $("prestigeBtn").disabled=aura<1000000;
+ $("perClick").textContent=
+   "+"+fmt(auraPerOrb());
 
-  $("presence").textContent=Math.floor(presence);
-  $("presfill").style.width=Math.min(100,presence)+"%";
+ $("auto").textContent=
+   fmt(autoPower())+"/s";
 
-  if(awakenedTimer>0){
-    $("presenceMsg").textContent="🔥 ¡DESPERTAR ACTIVO! ("+awakenedTimer+"s) — Poder x5";
-  }else if(presence<25){
-    $("presenceMsg").textContent="Tu presencia todavía es de NPC.";
-  }else if(presence<60){
-    $("presenceMsg").textContent="😎 Se empieza a notar tu presencia.";
-  }else if(presence<90){
-    $("presenceMsg").textContent="🔥 Tenés presencia fuerte.";
-  }else{
-    $("presenceMsg").textContent="👑 ¡Listo para despertar!";
-  }
+ $("comboStat").textContent=
+   "x"+combo;
 
-  $("bossName").textContent=boss.name;
-  $("bossHp").textContent=fmt(Math.max(0,bossHp));
-  $("bossMaxHp").textContent=fmt(boss.hp);
+ if(next){
 
-  document.querySelectorAll("[data-char]").forEach(b=>{
-    b.classList.toggle("active", b.dataset.char===character);
-  });
-  document.querySelectorAll("[data-zone]").forEach(b=>{
-    b.classList.toggle("active", b.dataset.zone===zone);
-  });
+   const percentage=
+   ((aura-rank.need)/
+   (next.need-rank.need))*100;
 
-  updateTheme();
-  save();
+   $("fill").style.width=
+   Math.min(100,percentage)+"%";
+
+   $("progress").textContent=
+   fmt(aura)+" / "+fmt(next.need)+" Aura";
+
+ }else{
+
+   $("fill").style.width="100%";
+
+   $("progress").textContent=
+   "🔥 NIVEL MÁXIMO";
+
+ }
+
+ $("powerLv").textContent=power;
+
+ $("botLv").textContent=bot;
+
+ $("prestigeLv").textContent=prestige;
+
+ $("prestigeMult").textContent=
+   "x"+prestigeMultiplier().toFixed(1);
+
+ $("buyPower").textContent=
+   fmt(powerCost())+" Aura";
+
+ $("buyPower").disabled=
+   aura<powerCost();
+
+ $("buyBot").textContent=
+   fmt(botCost())+" Aura";
+
+ $("buyBot").disabled=
+   aura<botCost();
+
+ $("prestigeBtn").disabled=
+   aura<1000000;
+
+ $("presence").textContent=
+   Math.floor(presence);
+
+ $("presfill").style.width=
+   Math.min(100,presence)+"%";
+
+ if(awakenedTimer>0){
+
+   $("presenceMsg").textContent=
+   "🔥 DESPERTAR ACTIVO · "+awakenedTimer+"s · PODER x5";
+
+ }else if(presence<25){
+
+   $("presenceMsg").textContent=
+   "Tu presencia todavía es de NPC.";
+
+ }else if(presence<60){
+
+   $("presenceMsg").textContent=
+   "😎 Se empieza a notar tu presencia.";
+
+ }else if(presence<90){
+
+   $("presenceMsg").textContent=
+   "🔥 Tenés presencia fuerte.";
+
+ }else{
+
+   $("presenceMsg").textContent=
+   "👑 ¡Tu Aura está a punto de despertar!";
+
+ }
+
+ $("bossName").textContent=
+ zones[zone].name;
+
+ $("bossHp").textContent=
+ fmt(Math.max(0,bossHp));
+
+ $("bossMaxHp").textContent=
+ fmt(zones[zone].hp);
+
+ $("worldLabel").textContent=
+ zone==="Escuela"?"🏫 ESCUELA":
+ zone==="Ciudad"?"🏙️ CIUDAD":
+ zone==="Noche"?"🌃 CIUDAD NOCTURNA":
+ "🌌 DIMENSIÓN AURA";
+
+ document.querySelectorAll("[data-char]")
+ .forEach(button=>{
+
+   button.classList.toggle(
+     "active",
+     button.dataset.char===character
+   );
+
+ });
+
+ document.querySelectorAll("[data-zone]")
+ .forEach(button=>{
+
+   button.classList.toggle(
+     "active",
+     button.dataset.zone===zone
+   );
+
+ });
+
+ updatePlayerVisual();
+
+ document.body.className=
+ "zone-"+zone+
+ (awakenedTimer>0?" awakened":"");
+
+ save();
+
 }
 
-function log(msg){
-  const item=document.createElement("div");
-  item.textContent=msg;
-  $("log").prepend(item);
-  while($("log").children.length>12){ $("log").lastChild.remove(); }
+/* ========================================
+   LOG
+======================================== */
+
+function log(message){
+
+ const item=
+ document.createElement("div");
+
+ item.textContent=message;
+
+ $("log").prepend(item);
+
+ while($("log").children.length>15){
+
+   $("log").lastChild.remove();
+
+ }
+
 }
 
-function pop(msg){
-  const item=document.createElement("div");
-  item.className="pop";
-  item.textContent=msg;
-  item.style.left=innerWidth/2+"px";
-  item.style.top=innerHeight/2+"px";
-  document.body.appendChild(item);
-  setTimeout(()=>{ item.remove(); },700);
+/* ========================================
+   POPUP
+======================================== */
+
+function pop(message){
+
+ const item=
+ document.createElement("div");
+
+ item.className="pop";
+
+ item.textContent=message;
+
+ item.style.left=
+   Math.random()*70+15+"%";
+
+ item.style.top="45%";
+
+ document.body.appendChild(item);
+
+ setTimeout(()=>{
+   item.remove();
+ },800);
+
 }
 
-function animateCharacter(){
-  const box=$("avatarBox");
-  box.classList.remove("anim-bounce");
-  void box.offsetWidth;
-  box.classList.add("anim-bounce");
+/* ========================================
+   PARTÍCULAS
+======================================== */
+
+function particles(x,y,count=12){
+
+ for(let i=0;i<count;i++){
+
+   const p=
+   document.createElement("div");
+
+   p.className="particle";
+
+   p.style.left=x+"px";
+
+   p.style.top=y+"px";
+
+   p.style.setProperty(
+     "--dx",
+     (Math.random()*120-60)+"px"
+   );
+
+   p.style.setProperty(
+     "--dy",
+     (Math.random()*120-80)+"px"
+   );
+
+   p.style.background=
+     Math.random()<.5?
+     "#ff4fd8":
+     "#ffe66d";
+
+   $("world").appendChild(p);
+
+   setTimeout(()=>{
+     p.remove();
+   },700);
+
+ }
+
 }
+
+/* ========================================
+   ACTUALIZAR PERSONAJE
+======================================== */
+
+function updatePlayerVisual(){
+
+ const player=$("player");
+
+ player.className=
+ "player "+character;
+
+ player.style.left=
+   playerX+"%";
+
+ player.style.top=
+   playerY+"%";
+
+}
+
+/* ========================================
+   CREAR ORB
+======================================== */
+
+function createOrb(){
+
+ if(orbs.length>=12)
+   return;
+
+ const typeRandom=Math.random();
+
+ let type="normal";
+
+ if(typeRandom<.08)
+   type="legendary";
+ else if(typeRandom<.25)
+   type="rare";
+
+ const orb=
+ document.createElement("div");
+
+ orb.className=
+ "orb "+type;
+
+ const x=
+ 5+Math.random()*90;
+
+ const y=
+ 8+Math.random()*82;
+
+ orb.style.left=x+"%";
+ orb.style.top=y+"%";
+
+ $("world").appendChild(orb);
+
+ const data={
+   element:orb,
+   x,
+   y,
+   type,
+   value:
+     type==="legendary"?
+     100:
+     type==="rare"?
+     25:
+     5
+ };
+
+ orbs.push(data);
+
+}
+
+/* ========================================
+   ELIMINAR ORB
+======================================== */
+
+function collectOrb(orb){
+
+ const index=
+ orbs.indexOf(orb);
+
+ if(index===-1)
+   return;
+
+ const worldRect=
+ $("world").getBoundingClientRect();
+
+ const px=
+   (playerX/100)*worldRect.width;
+
+ const py=
+   (playerY/100)*worldRect.height;
+
+ const ox=
+   (orb.x/100)*worldRect.width;
+
+ const oy=
+   (orb.y/100)*worldRect.height;
+
+ const value=
+   orb.value*auraPerOrb();
+
+ aura+=value;
+
+ presence=
+   Math.min(
+     100,
+     presence+
+     (orb.type==="legendary"?1:.15)
+   );
+
+ combo++;
+ comboTimer=3;
+
+ particles(ox,oy,
+   orb.type==="legendary"?25:12
+ );
+
+ pop(
+   "+"+fmt(value)+" AURA"
+ );
+
+ orb.element.remove();
+
+ orbs.splice(index,1);
+
+ if(orb.type==="legendary"){
+
+   log(
+     "🌟 ¡ORBE LEGENDARIO! +"+
+     fmt(value)+" Aura"
+   );
+
+   $("event").textContent=
+     "🌟 ¡ORBE LEGENDARIO CAPTURADO!";
+
+ }else if(orb.type==="rare"){
+
+   log(
+     "💎 Orbe raro: +"+
+     fmt(value)+" Aura"
+   );
+
+ }else{
+
+   $("event").textContent=
+     "✨ Orbe capturado +"+
+     fmt(value);
+
+ }
+
+ checkAwakening();
+
+ render();
+
+}
+
+/* ========================================
+   DETECTAR COLISIÓN
+======================================== */
+
+function checkOrbCollision(){
+
+ const worldWidth=
+   $("world").clientWidth;
+
+ const worldHeight=
+   $("world").clientHeight;
+
+ for(const orb of [...orbs]){
+
+   const dx=
+     (orb.x-playerX)*
+     worldWidth/100;
+
+   const dy=
+     (orb.y-playerY)*
+     worldHeight/100;
+
+   const distance=
+     Math.sqrt(dx*dx+dy*dy);
+
+   if(distance<34){
+
+     collectOrb(orb);
+
+   }
+
+ }
+
+}
+
+/* ========================================
+   MOVIMIENTO
+======================================== */
+
+function movePlayer(dx,dy,delta){
+
+ const speed=
+   character==="Sigma"?
+   0.075:
+   character==="Chad"?
+   0.055:
+   character==="Master"?
+   0.06:
+   0.05;
+
+ playerX+=dx*speed*delta;
+
+ playerY+=dy*speed*delta;
+
+ playerX=
+   Math.max(4,Math.min(96,playerX));
+
+ playerY=
+   Math.max(8,Math.min(92,playerY));
+
+ const movingNow=
+   Math.abs(dx)+Math.abs(dy)>0;
+
+ $("player").classList.toggle(
+   "running",
+   movingNow
+ );
+
+ updatePlayerVisual();
+
+ checkOrbCollision();
+
+}
+
+/* ========================================
+   TECLADO
+======================================== */
+
+document.addEventListener(
+ "keydown",
+ e=>{
+
+   keys[e.key.toLowerCase()]=true;
+
+ }
+);
+
+document.addEventListener(
+ "keyup",
+ e=>{
+
+   keys[e.key.toLowerCase()]=false;
+
+ }
+);
+
+/* ========================================
+   JOYSTICK
+======================================== */
+
+const joystick=$("joystick");
+const stick=$("stick");
+
+let joyX=0;
+let joyY=0;
+
+function joystickMove(clientX,clientY){
+
+ const rect=
+   joystick.getBoundingClientRect();
+
+ const centerX=
+   rect.left+rect.width/2;
+
+ const centerY=
+   rect.top+rect.height/2;
+
+ let dx=
+   clientX-centerX;
+
+ let dy=
+   clientY-centerY;
+
+ const max=
+   rect.width*.34;
+
+ const distance=
+   Math.sqrt(dx*dx+dy*dy);
+
+ if(distance>max){
+
+   dx=dx/distance*max;
+   dy=dy/distance*max;
+
+ }
+
+ joyX=dx/max;
+ joyY=dy/max;
+
+ stick.style.transform=
+   "translate("+dx+"px,"+dy+"px)";
+
+}
+
+function joystickEnd(){
+
+ joyX=0;
+ joyY=0;
+
+ stick.style.transform=
+   "translate(0,0)";
+
+}
+
+joystick.addEventListener(
+ "pointerdown",
+ e=>{
+
+   joystick.setPointerCapture(e.pointerId);
+
+   joystickMove(
+     e.clientX,
+     e.clientY
+   );
+
+ }
+);
+
+joystick.addEventListener(
+ "pointermove",
+ e=>{
+
+   if(e.buttons)
+     joystickMove(
+       e.clientX,
+       e.clientY
+     );
+
+ }
+);
+
+joystick.addEventListener(
+ "pointerup",
+ joystickEnd
+);
+
+joystick.addEventListener(
+ "pointercancel",
+ joystickEnd
+);
+
+/* ========================================
+   HABILIDADES
+======================================== */
+
+let skillCooldown=0;
+
+function useSkill(){
+
+ if(skillCooldown>0){
+
+   pop("⏳ ESPERÁ");
+
+   return;
+
+ }
+
+ skillCooldown=
+   character==="Master"?
+   4:
+   6;
+
+ if(character==="Sigma"){
+
+   /* DASH */
+
+   let dirX=joyX;
+   let dirY=joyY;
+
+   if(
+     Math.abs(dirX)+Math.abs(dirY)<.2
+   ){
+
+     dirX=
+       keys["d"]||keys["arrowright"]?
+       1:
+       keys["a"]||keys["arrowleft"]?
+       -1:0;
+
+     dirY=
+       keys["s"]||keys["arrowdown"]?
+       1:
+       keys["w"]||keys["arrowup"]?
+       -1:0;
+
+   }
+
+   if(dirX===0 && dirY===0)
+     dirX=1;
+
+   playerX+=dirX*12;
+   playerY+=dirY*12;
+
+   playerX=
+     Math.max(4,Math.min(96,playerX));
+
+   playerY=
+     Math.max(8,Math.min(92,playerY));
+
+   particles(
+     playerX/100*$("world").clientWidth,
+     playerY/100*$("world").clientHeight,
+     30
+   );
+
+   pop("💨 DASH!");
+
+ }else if(character==="Chad"){
+
+   const damage=
+     50+
+     power*10+
+     prestige*25;
+
+   bossHp-=damage;
+
+   showDamage(damage);
+
+   particles(
+     bossPosition().x,
+     bossPosition().y,
+     25
+   );
+
+   pop("🗿 ¡GOLPE!");
+
+   checkBoss();
+
+ }else if(character==="Master"){
+
+   /* EXPLOSIÓN */
+
+   const bonus=
+     Math.floor(
+       200*
+       prestigeMultiplier()*
+       zoneMultiplier()
+     );
+
+   aura+=bonus;
+
+   presence=
+     Math.min(100,presence+5);
+
+   for(const orb of [...orbs]){
+
+     collectOrb(orb);
+
+   }
+
+   particles(
+     playerX/100*$("world").clientWidth,
+     playerY/100*$("world").clientHeight,
+     60
+   );
+
+   pop("👑 ¡EXPLOSIÓN DE AURA!");
+
+   log(
+     "👑 Aura Master liberó "+
+     fmt(bonus)+" Aura."
+   );
+
+ }else{
+
+   aura+=
+     Math.floor(
+       25*prestigeMultiplier()
+     );
+
+   pop("🔥 ¡IMPULSO!");
+
+ }
+
+ render();
+
+}
+
+/* ========================================
+   ATAQUE
+======================================== */
+
+function attackBoss(){
+
+ const pos=bossPosition();
+
+ const dx=
+   pos.x-
+   playerX/100*$("world").clientWidth;
+
+ const dy=
+   pos.y-
+   playerY/100*$("world").clientHeight;
+
+ const distance=
+   Math.sqrt(dx*dx+dy*dy);
+
+ if(distance>90){
+
+   $("bossMsg").textContent=
+     "⚔️ ¡Acercate al jefe para atacarlo!";
+
+   pop("📍 ACERCATE");
+
+   return;
+
+ }
+
+ let damage=
+   Math.max(
+     5,
+     auraPerOrb()*
+     .35
+   );
+
+ if(character==="Chad")
+   damage*=2;
+
+ if(character==="Master")
+   damage*=3;
+
+ bossHp-=damage;
+
+ showDamage(Math.floor(damage));
+
+ particles(pos.x,pos.y,15);
+
+ if(bossHp<=0){
+
+   defeatBoss();
+
+ }else{
+
+   $("bossMsg").textContent=
+     "💥 Jefe golpeado: -"+
+     fmt(damage);
+
+ }
+
+ render();
+
+}
+
+/* ========================================
+   POSICIÓN JEFE
+======================================== */
+
+function bossPosition(){
+
+ const rect=
+   $("world").getBoundingClientRect();
+
+ return {
+   x:rect.width*.75,
+   y:rect.height*.45
+ };
+
+}
+
+/* ========================================
+   DAÑO VISUAL
+======================================== */
+
+function showDamage(amount){
+
+ const d=
+   document.createElement("div");
+
+ d.className="damage";
+
+ d.textContent="-"+fmt(amount);
+
+ const pos=bossPosition();
+
+ d.style.left=
+   pos.x+"px";
+
+ d.style.top=
+   pos.y+"px";
+
+ $("world").appendChild(d);
+
+ setTimeout(()=>{
+   d.remove();
+ },800);
+
+}
+
+/* ========================================
+   JEFE
+======================================== */
+
+function defeatBoss(){
+
+ const reward=
+   Math.floor(
+     zones[zone].hp*
+     2*
+     prestigeMultiplier()
+   );
+
+ aura+=reward;
+
+ presence=
+   Math.min(
+     100,
+     presence+5
+   );
+
+ log(
+   "👹 ¡JEFE DERROTADO! +"+
+   fmt(reward)+" Aura"
+ );
+
+ pop(
+   "👹 JEFE DERROTADO!"
+ );
+
+ $("event").textContent=
+   "🔥 ¡DOMINASTE EL ESCENARIO! +"+
+   fmt(reward)+" Aura";
+
+ setTimeout(()=>{
+
+   bossHp=
+     zones[zone].hp;
+
+   $("bossMsg").textContent=
+     "👹 ¡Un nuevo jefe apareció!";
+
+   render();
+
+ },1200);
+
+}
+
+/* ========================================
+   DESPERTAR
+======================================== */
 
 function checkAwakening(){
-  if(presence>=100 && awakenedTimer===0){
-    awakenedTimer=15;
-    const box=$("avatarBox");
-    box.classList.remove("anim-bounce");
-    void box.offsetWidth;
-    box.classList.add("anim-awaken");
-    log("🔥 ¡HAS DESPERTADO! Poder x5 durante 15 segundos.");
-    pop("🔥 ¡DESPERTAR!");
-  }
+
+ if(
+   presence>=100 &&
+   awakenedTimer<=0
+ ){
+
+   awakenedTimer=15;
+
+   log(
+     "🔥 ¡DESPERTASTE TU AURA! Poder x5."
+   );
+
+   pop(
+     "🔥 ¡DESPERTAR!"
+   );
+
+   $("event").textContent=
+     "🔥 ¡MODO DESPERTAR ACTIVADO!";
+
+ }
+
 }
 
-function farm(){
-  const gain=clickPower();
-  aura+=gain;
-  presence=Math.min(100,presence+.04);
-  animateCharacter();
-  pop("+"+fmt(gain)+" AURA");
+/* ========================================
+   CREAR ESTRELLAS
+======================================== */
 
-  if(Math.random()<.06) eventTrigger();
-  checkAwakening();
-  render();
+function createStars(){
+
+ for(let i=0;i<35;i++){
+
+   const star=
+     document.createElement("div");
+
+   star.className="star";
+
+   star.style.left=
+     Math.random()*100+"%";
+
+   star.style.top=
+     Math.random()*100+"%";
+
+   star.style.animationDelay=
+     Math.random()*2+"s";
+
+   $("world").appendChild(star);
+
+ }
+
 }
 
-function eventTrigger(){
-  if(Math.random()<.75){
-    const bonus=Math.max(20,Math.floor(aura*.1)+10);
-    aura+=bonus;
-    $("event").textContent="🔥 MOMENTO AURA: +"+fmt(bonus);
-    log("🔥 Evento positivo: +"+fmt(bonus)+" Aura");
-  }else{
-    const loss=Math.min(aura,Math.max(5,Math.floor(aura*.05)));
-    aura-=loss;
-    $("event").textContent="💀 AURA NEGATIVA: -"+fmt(loss);
-    log("💀 Evento NPC: -"+fmt(loss)+" Aura");
-  }
+/* ========================================
+   COMBO
+======================================== */
+
+function updateCombo(delta){
+
+ if(combo<=0)
+   return;
+
+ comboTimer-=delta/1000;
+
+ if(comboTimer<=0){
+
+   combo=0;
+
+   $("combo").textContent="";
+
+   render();
+
+ }
+
+ if(combo>=3){
+
+   $("combo").textContent=
+     "🔥 COMBO x"+combo;
+
+ }else{
+
+   $("combo").textContent="";
+
+ }
+
 }
 
-$("farm").onclick=farm;
+/* ========================================
+   LOOP PRINCIPAL
+======================================== */
+
+function gameLoop(now){
+
+ const delta=
+   Math.min(
+     50,
+     now-lastTime
+   );
+
+ lastTime=now;
+
+ let dx=joyX;
+ let dy=joyY;
+
+ if(keys["w"]||keys["arrowup"])
+   dy-=1;
+
+ if(keys["s"]||keys["arrowdown"])
+   dy+=1;
+
+ if(keys["a"]||keys["arrowleft"])
+   dx-=1;
+
+ if(keys["d"]||keys["arrowright"])
+   dx+=1;
+
+ const length=
+   Math.sqrt(dx*dx+dy*dy);
+
+ if(length>1){
+
+   dx/=length;
+   dy/=length;
+
+ }
+
+ movePlayer(
+   dx,
+   dy,
+   delta
+ );
+
+ updateCombo(delta);
+
+ requestAnimationFrame(gameLoop);
+
+}
+
+requestAnimationFrame(gameLoop);
+
+/* ========================================
+   AUTO AURA
+======================================== */
+
+setInterval(()=>{
+
+ if(bot>0){
+
+   const gain=
+     autoPower();
+
+   aura+=gain;
+
+   presence=
+     Math.min(
+       100,
+       presence+.01*bot
+     );
+
+   checkAwakening();
+
+   if(Math.random()<.25){
+
+     pop(
+       "🤖 +"+fmt(gain)
+     );
+
+   }
+
+   render();
+
+ }
+
+},1000);
+
+/* ========================================
+   SPAWN ORBES
+======================================== */
+
+setInterval(()=>{
+
+ createOrb();
+
+},900);
+
+for(let i=0;i<6;i++)
+ createOrb();
+
+/* ========================================
+   DESPERTAR TIMER
+======================================== */
+
+setInterval(()=>{
+
+ if(awakenedTimer>0){
+
+   awakenedTimer--;
+
+   if(awakenedTimer===0){
+
+     $("event").textContent=
+       "El despertar terminó.";
+
+     log(
+       "💤 El modo despertar terminó."
+     );
+
+   }
+
+   render();
+
+ }
+
+ if(skillCooldown>0){
+
+   skillCooldown--;
+
+ }
+
+},1000);
+
+/* ========================================
+   TIENDA
+======================================== */
 
 $("buyPower").onclick=()=>{
-  const cost=powerCost();
-  if(aura>=cost){ aura-=cost; power++; log("⚡ Poder de Aura mejorado."); render(); }
+
+ const cost=
+   powerCost();
+
+ if(aura>=cost){
+
+   aura-=cost;
+
+   power++;
+
+   log(
+     "⚡ Poder aumentado al nivel "+
+     power
+   );
+
+   render();
+
+ }
+
 };
 
 $("buyBot").onclick=()=>{
-  const cost=botCost();
-  if(aura>=cost){ aura-=cost; bot++; log("🤖 Aura Bot mejorado."); render(); }
+
+ const cost=
+   botCost();
+
+ if(aura>=cost){
+
+   aura-=cost;
+
+   bot++;
+
+   log(
+     "🤖 Aura Bot nivel "+
+     bot
+   );
+
+   render();
+
+ }
+
 };
+
+/* ========================================
+   PRESTIGIO
+======================================== */
 
 $("prestigeBtn").onclick=()=>{
-  if(aura>=1000000){
-    aura=0; prestige++; power=0; bot=0;
-    $("event").textContent="⭐ ¡TRASCENDISTE DE PLANO!";
-    log("⭐ Prestigio "+prestige+" conseguido.");
-    render();
-  }
+
+ if(aura<1000000)
+   return;
+
+ aura=0;
+
+ power=0;
+
+ bot=0;
+
+ prestige++;
+
+ presence=0;
+
+ combo=0;
+
+ log(
+   "⭐ ¡TRASCENDISTE! Prestigio "+
+   prestige
+ );
+
+ $("event").textContent=
+   "⭐ ¡NUEVO PLANO DESBLOQUEADO!";
+
+ render();
+
 };
 
-document.querySelectorAll(".tab").forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-    document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    $(b.dataset.tab).classList.add("active");
-  };
+/* ========================================
+   TABS
+======================================== */
+
+document.querySelectorAll(".tab")
+.forEach(button=>{
+
+ button.onclick=()=>{
+
+   document.querySelectorAll(".tab")
+   .forEach(x=>
+     x.classList.remove("active")
+   );
+
+   document.querySelectorAll(".panel")
+   .forEach(x=>
+     x.classList.remove("active")
+   );
+
+   button.classList.add("active");
+
+   $(button.dataset.tab)
+   .classList.add("active");
+
+ };
+
 });
 
-const charReq={NPC:0, Sigma:10000, Chad:100000, Master:1000000};
-const zoneReq={Escuela:0, Ciudad:10000, Noche
+/* ========================================
+   PERSONAJES
+======================================== */
+
+document.querySelectorAll("[data-char]")
+.forEach(button=>{
+
+ button.onclick=()=>{
+
+   const selected=
+     button.dataset.char;
+
+   if(aura<charReq[selected]){
+
+     pop(
+       "🔒 Necesitás "+
+       fmt(charReq[selected])+
+       " Aura"
+     );
+
+     return;
+
+   }
+
+   character=selected;
+
+   log(
+     "🧍 Personaje cambiado: "+
+     characters[selected].name
+   );
+
+   render();
+
+ };
+
+});
+
+/* ========================================
+   ZONAS
+======================================== */
+
+document.querySelectorAll("[data-zone]")
+.forEach(button=>{
+
+ button.onclick=()=>{
+
+   const selected=
+     button.dataset.zone;
+
+   if(aura<zoneReq[selected]){
+
+     pop(
+       "🔒 Necesitás "+
+       fmt(zoneReq[selected])+
+       " Aura"
+     );
+
+     return;
+
+   }
+
+   zone=selected;
+
+   bossHp=
+     zones[zone].hp;
+
+   /* limpiar orbes */
+
+   orbs.forEach(
+     orb=>orb.element.remove()
+   );
+
+   orbs=[];
+
+   for(let i=0;i<6;i++)
+     createOrb();
+
+   log(
+     "🗺️ Entraste a "+
+     zone
+   );
+
+   $("event").textContent=
+     "🌎 Nueva zona: "+zone;
+
+   render();
+
+ };
+
+});
+
+/* ========================================
+   BOTONES
+======================================== */
+
+$("attack").onclick=
+ attackBoss;
+
+$("skill").onclick=
+ useSkill;
+
+/* ========================================
+   RESET
+======================================== */
+
+$("reset").onclick=()=>{
+
+ if(
+   confirm(
+     "¿Seguro que querés borrar toda la partida?"
+   )
+ ){
+
+   localStorage.removeItem(
+     "farmear_aura_v3"
+   );
+
+   location.reload();
+
+ }
+
+};
+
+/* ========================================
+   INICIALIZACIÓN
+======================================== */
+
+createStars();
+
+updatePlayerVisual();
+
+render();
+
+log(
+ "🔥 Bienvenido a AURA WORLD."
+);
+
+log(
+ "🕹️ Movete y recolectá los orbes."
+);
+
+log(
+ "👹 Acercate al jefe para atacarlo."
+);
+
+</script>
+
+</body>
+</html>
