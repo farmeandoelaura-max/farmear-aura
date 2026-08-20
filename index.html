@@ -177,12 +177,6 @@ h1{
   touch-action:none;
 }
 
-/*
-   IMPORTANTE:
-   El mundo ahora comienza en 0,0.
-   La cámara lo desplaza mediante translate().
-*/
-
 .world{
   position:absolute;
 
@@ -398,7 +392,7 @@ h1{
 }
 
 /* =========================
-   JUGADOR
+   JUGADOR (DISEÑO Y TALLA REVISADOS)
 ========================= */
 
 .player{
@@ -448,45 +442,70 @@ h1{
 .head{
   position:absolute;
 
-  width:33px;
-  height:36px;
+  width:32px;
+  height:34px;
 
-  left:12px;
+  left:13px;
   top:4px;
 
   border-radius:50%;
 
-  background:#f6c453;
+  /* Tono de piel claro */
+  background:#ffdfbf;
 
   z-index:5;
+
+  box-shadow: inset 0 -2px 4px rgba(0,0,0,0.15);
 }
 
 .hair{
   position:absolute;
 
-  width:37px;
-  height:15px;
+  width:38px;
+  height:20px;
 
-  left:-2px;
-  top:-3px;
+  left:-3px;
+  top:-5px;
 
   border-radius:
-    16px 16px 5px 5px;
+    16px 16px 8px 8px;
 
-  background:#29170b;
+  background:#1e1b18;
+}
+
+.hair::before{
+  content:"";
+  position:absolute;
+  top:12px;
+  left:2px;
+  width:10px;
+  height:12px;
+  background:#1e1b18;
+  border-radius:0 0 5px 5px;
+}
+
+.hair::after{
+  content:"";
+  position:absolute;
+  top:12px;
+  right:2px;
+  width:10px;
+  height:12px;
+  background:#1e1b18;
+  border-radius:0 0 5px 5px;
 }
 
 .eye{
   position:absolute;
 
   width:5px;
-  height:5px;
+  height:6px;
 
   border-radius:50%;
 
-  background:#111;
+  background:#0f172a;
 
-  top:18px;
+  top:16px;
 }
 
 .eye.l{
@@ -500,27 +519,30 @@ h1{
 .body{
   position:absolute;
 
-  width:42px;
-  height:34px;
+  width:40px;
+  height:32px;
 
-  left:8px;
-  top:37px;
+  left:9px;
+  top:35px;
 
   border-radius:
-    10px 10px 4px 4px;
+    8px 8px 4px 4px;
 
   background:#2563eb;
+
+  border-top: 3px solid #1d4ed8;
 }
 
 .arm{
   position:absolute;
 
   width:9px;
-  height:30px;
+  height:28px;
 
-  top:39px;
+  top:37px;
 
-  background:#f6c453;
+  /* Tono de piel claro */
+  background:#ffdfbf;
 
   border-radius:8px;
 }
@@ -539,9 +561,9 @@ h1{
   position:absolute;
 
   width:13px;
-  height:27px;
+  height:26px;
 
-  top:67px;
+  top:64px;
 
   background:#1e293b;
 
@@ -619,20 +641,21 @@ h1{
 /* SIGMA */
 
 .player.Sigma .head{
-  background:#d99b62;
+  background:#ffe0c2;
 }
 
 .player.Sigma .hair{
-  background:#111;
-  height:12px;
+  background:#0f172a;
+  height:14px;
 }
 
 .player.Sigma .body{
-  background:#111827;
+  background:#09090b;
+  border-top: 3px solid #27272a;
 }
 
 .player.Sigma .arm{
-  background:#d99b62;
+  background:#ffe0c2;
 }
 
 /* CHAD */
@@ -644,7 +667,7 @@ h1{
 }
 
 .player.Chad .head{
-  background:#d97706;
+  background:#ffd8b3;
 
   border-radius:
     9px 9px 18px 18px;
@@ -659,7 +682,7 @@ h1{
 }
 
 .player.Chad .arm{
-  background:#d97706;
+  background:#ffd8b3;
   width:12px;
 }
 
@@ -677,20 +700,21 @@ h1{
 }
 
 .player.Master .head{
-  background:#c084fc;
+  background:#ffdfbf;
 }
 
 .player.Master .hair{
   background:#fde047;
-  height:9px;
+  height:16px;
 }
 
 .player.Master .body{
   background:#581c87;
+  border-top: 3px solid #7e22ce;
 }
 
 .player.Master .arm{
-  background:#c084fc;
+  background:#ffdfbf;
 }
 
 .player.Master .leg{
@@ -1633,16 +1657,10 @@ NPC
 <div class="progress" id="progress"></div>
 
 
-<!-- =========================
-     MUNDO
-========================= -->
-
 <div class="world-wrap" id="worldWrap">
 
 <div class="world" id="world">
 
-
-<!-- DECORACIÓN -->
 
 <div class="building"
 style="left:170px;top:170px">
@@ -1682,8 +1700,6 @@ style="left:1250px;top:900px">
 </div>
 
 
-<!-- JUGADOR -->
-
 <div class="player" id="player">
 
 <div class="player-aura"></div>
@@ -1711,8 +1727,6 @@ style="left:1250px;top:900px">
 </div>
 
 
-<!-- JEFE -->
-
 <div class="boss" id="boss">
 
 <div class="boss-horn l"></div>
@@ -1732,53 +1746,10 @@ style="left:1250px;top:900px">
 </div>
 
 
-<!-- CONTROLES -->
-
 <div class="controls">
 
 <div class="joystick" id="joystick">
 
 <div class="stick" id="stick"></div>
 
-</div>
-
-<div class="actions">
-
-<button
-class="action attack"
-id="attack">
-
-⚔️<br>
-ATACAR
-
-</button>
-
-<button
-class="action skill"
-id="skill">
-
-🔥<br>
-HABILIDAD
-
-</button>
-
-</div>
-
-</div>
-
-
-<!-- ESTADÍSTICAS -->
-
-<div class="stats">
-
-<div class="stat">
-
-🟣 AURA
-
-<b id="orbValue">
-+1
-</b>
-
-</div>
-
-<div c
+</di
