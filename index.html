@@ -59,19 +59,15 @@ h1{ font-size:34px; margin:5px 0; letter-spacing:1px; }
 }
 .farm:active{ transform:scale(.92); }
 
-/* =========================
-   CONTENEDOR DE PERSONAJE ILUSTRADO
-   ========================= */
-
+/* CONTENEDOR DE PERSONAJE */
 .character-stage{
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  margin:16px 0; height:210px;
+  margin:16px 0; min-height:180px;
 }
 
 .avatar-container{
-  width:140px;
-  height:180px;
-  position:relative;
+  width:120px;
+  height:160px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -83,6 +79,7 @@ h1{ font-size:34px; margin:5px 0; letter-spacing:1px; }
   width:100%;
   height:100%;
   object-fit:contain;
+  display:block;
 }
 
 /* Animaciones al farmear */
@@ -102,7 +99,7 @@ h1{ font-size:34px; margin:5px 0; letter-spacing:1px; }
   100%{ transform:scale(1); filter:brightness(1); }
 }
 
-.avatar-status{ font-size:14px; color:#f8fafc; margin-top:6px; font-weight:bold; }
+.avatar-status{ font-size:14px; color:#f8fafc; margin-top:8px; font-weight:bold; }
 
 /* ESTADÍSTICAS */
 .stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:10px; }
@@ -153,7 +150,7 @@ h1{ font-size:34px; margin:5px 0; letter-spacing:1px; }
 
 <div class="top">
 <h1>🔥 FARMEAR AURA</h1>
-<div class="sub">V2.0 — Personajes Ilustrados Realistas 😎</div>
+<div class="sub">V2.0 — Personajes Ilustrados Activos 😎</div>
 </div>
 
 <div class="card">
@@ -164,10 +161,10 @@ h1{ font-size:34px; margin:5px 0; letter-spacing:1px; }
 
 <button class="farm" id="farm">FARMEAR<br>AURA</button>
 
-<!-- VISTA DEL PERSONAJE CON IMAGEN/SVG -->
+<!-- VISTA DEL PERSONAJE MEDIANTE IMAGEN DIRECTA -->
 <div class="character-stage">
   <div class="avatar-container" id="avatarBox">
-    <div id="avatarSvg" class="avatar-img"></div>
+    <img id="avatarImg" class="avatar-img" alt="Personaje" />
   </div>
   <div class="avatar-status" id="avatarTitle">NPC de la plaza</div>
 </div>
@@ -263,123 +260,15 @@ Escuela:{name:"Celador NPC",hp:100}, Ciudad:{name:"Inspector de Estilo",hp:1000}
 Noche:{name:"Rey del Cringe",hp:10000}, Dimension:{name:"Sombra Cósmica",hp:100000}
 };
 
-/* ILUSTRACIONES SVG VECTORIALES DE PERSONAJES REALISTAS */
-const charSvgData = {
-NPC: `
-<svg viewBox="0 0 100 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-  <!-- Pelo -->
-  <path d="M 35 25 C 35 10, 65 10, 65 25 Z" fill="#4a2e16"/>
-  <!-- Cabeza -->
-  <ellipse cx="50" cy="30" rx="14" ry="16" fill="#fcd34d"/>
-  <!-- Ojos y Boca -->
-  <circle cx="45" cy="28" r="2" fill="#333"/>
-  <circle cx="55" cy="28" r="2" fill="#333"/>
-  <path d="M 46 36 Q 50 38 54 36" stroke="#333" stroke-width="1.5" fill="none"/>
-  <!-- Cuello -->
-  <rect x="47" y="44" width="6" height="6" fill="#fcd34d"/>
-  <!-- Torso / Camiseta -->
-  <path d="M 32 50 L 68 50 L 64 90 L 36 90 Z" fill="#2563eb"/>
-  <!-- Brazos -->
-  <path d="M 32 50 L 22 78 L 27 80 L 36 55 Z" fill="#2563eb"/>
-  <circle cx="24" cy="82" r="4" fill="#fcd34d"/>
-  <path d="M 68 50 L 78 78 L 73 80 L 64 55 Z" fill="#2563eb"/>
-  <circle cx="76" cy="82" r="4" fill="#fcd34d"/>
-  <!-- Pantalones -->
-  <path d="M 36 90 L 48 90 L 47 125 L 37 125 Z" fill="#1e293b"/>
-  <path d="M 52 90 L 64 90 L 63 125 L 53 125 Z" fill="#1e293b"/>
-  <!-- Zapatillas -->
-  <path d="M 32 125 L 47 125 L 47 132 L 30 132 Z" fill="#ef4444"/>
-  <path d="M 53 125 L 68 125 L 70 132 L 53 132 Z" fill="#ef4444"/>
-</svg>`,
+/* IMÁGENES SVG EMBEBIDAS COMO DATA URI EN FORMATO COMPATIBLE CON <IMG> */
+const charImages = {
+NPC: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'><path d='M35 25C35 10 65 10 65 25Z' fill='%234a2e16'/><ellipse cx='50' cy='30' rx='14' ry='16' fill='%23fcd34d'/><circle cx='45' cy='28' r='2' fill='%23333'/><circle cx='55' cy='28' r='2' fill='%23333'/><path d='M46 36Q50 38 54 36' stroke='%23333' stroke-width='1.5' fill='none'/><rect x='47' y='44' width='6' height='6' fill='%23fcd34d'/><path d='M32 50L68 50L64 90L36 90Z' fill='%232563eb'/><path d='M32 50L22 78L27 80L36 55Z' fill='%232563eb'/><circle cx='24' cy='82' r='4' fill='%23fcd34d'/><path d='M68 50L78 78L73 80L64 55Z' fill='%232563eb'/><circle cx='76' cy='82' r='4' fill='%23fcd34d'/><path d='M36 90L48 90L47 125L37 125Z' fill='%231e293b'/><path d='M52 90L64 90L63 125L53 125Z' fill='%231e293b'/><path d='M32 125L47 125L47 132L30 132Z' fill='%23ef4444'/><path d='M53 125L68 125L70 132L53 132Z' fill='%23ef4444'/></svg>",
 
-Sigma: `
-<svg viewBox="0 0 100 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-  <!-- Cabello peinado -->
-  <path d="M 32 24 C 35 8, 68 12, 68 25 C 60 18, 40 18, 32 24 Z" fill="#291d0e"/>
-  <!-- Cabeza -->
-  <polygon points="36,22 64,22 60,42 50,46 40,42" fill="#e0a96d"/>
-  <!-- Gafas de Sol -->
-  <rect x="40" y="27" width="9" height="6" rx="1" fill="#111"/>
-  <rect x="51" y="27" width="9" height="6" rx="1" fill="#111"/>
-  <line x1="49" y1="29" x2="51" y2="29" stroke="#111" stroke-width="2"/>
-  <!-- Boca Sigma -->
-  <path d="M 45 40 Q 50 39 55 40" stroke="#523111" stroke-width="1.5" fill="none"/>
-  <!-- Traje / Chaqueta elegante -->
-  <path d="M 28 48 L 72 48 L 66 92 L 34 92 Z" fill="#0f172a"/>
-  <!-- Corbata / Camisa -->
-  <polygon points="46,48 54,48 52,68 48,68" fill="#cbd5e1"/>
-  <polygon points="48,50 52,50 51,75 49,75" fill="#dc2626"/>
-  <!-- Brazos con abrigo -->
-  <path d="M 28 48 L 18 78 L 24 80 L 33 54 Z" fill="#0f172a"/>
-  <circle cx="21" cy="82" r="4" fill="#e0a96d"/>
-  <path d="M 72 48 L 82 78 L 76 80 L 67 54 Z" fill="#0f172a"/>
-  <circle cx="79" cy="82" r="4" fill="#e0a96d"/>
-  <!-- Pantalón vestir -->
-  <rect x="36" y="92" width="12" height="34" fill="#334155"/>
-  <rect x="52" y="92" width="12" height="34" fill="#334155"/>
-  <!-- Zapatos negros -->
-  <path d="M 30 126 L 48 126 L 48 133 L 28 133 Z" fill="#000"/>
-  <path d="M 52 126 L 70 126 L 72 133 L 52 133 Z" fill="#000"/>
-</svg>`,
+Sigma: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'><path d='M32 24C35 8 68 12 68 25C60 18 40 18 32 24Z' fill='%23291d0e'/><polygon points='36,22 64,22 60,42 50,46 40,42' fill='%23e0a96d'/><rect x='40' y='27' width='9' height='6' rx='1' fill='%23111'/><rect x='51' y='27' width='9' height='6' rx='1' fill='%23111'/><line x1='49' y1='29' x2='51' y2='29' stroke='%23111' stroke-width='2'/><path d='M45 40Q50 39 55 40' stroke='%23523111' stroke-width='1.5' fill='none'/><path d='M28 48L72 48L66 92L34 92Z' fill='%230f172a'/><polygon points='46,48 54,48 52,68 48,68' fill='%23cbd5e1'/><polygon points='48,50 52,50 51,75 49,75' fill='%23dc2626'/><path d='M28 48L18 78L24 80L33 54Z' fill='%230f172a'/><circle cx='21' cy='82' r='4' fill='%23e0a96d'/><path d='M72 48L82 78L76 80L67 54Z' fill='%230f172a'/><circle cx='79' cy='82' r='4' fill='%23e0a96d'/><rect x='36' y='92' width='12' height='34' fill='%23334155'/><rect x='52' y='92' width='12' height='34' fill='%23334155'/><path d='M30 126L48 126L48 133L28 133Z' fill='%23000'/><path d='M52 126L70 126L72 133L52 133Z' fill='%23000'/></svg>",
 
-Chad: `
-<svg viewBox="0 0 100 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-  <!-- Mandíbula Gigachad estructurada -->
-  <polygon points="34,18 66,18 66,30 58,45 50,48 42,45 34,30" fill="#d97706"/>
-  <!-- Pelo alto -->
-  <path d="M 34 18 C 34 5, 66 5, 66 18 Z" fill="#1c1917"/>
-  <!-- Ojos definidos -->
-  <line x1="40" y1="25" x2="46" y2="25" stroke="#451a03" stroke-width="2"/>
-  <line x1="54" y1="25" x2="60" y2="25" stroke="#451a03" stroke-width="2"/>
-  <!-- Barbilla marcada -->
-  <path d="M 46 40 L 50 43 L 54 40" stroke="#78350f" stroke-width="1.5" fill="none"/>
-  <!-- Cuello musculoso -->
-  <rect x="42" y="45" width="16" height="8" fill="#d97706"/>
-  <!-- Pecho / Camiseta tirantes musculosa -->
-  <path d="M 22 52 L 78 52 L 68 92 L 32 92 Z" fill="#dc2626"/>
-  <!-- Pecho musculoso dibujado -->
-  <path d="M 38 60 Q 50 66 62 60" stroke="#991b1b" stroke-width="2" fill="none"/>
-  <!-- Brazos enormes -->
-  <path d="M 22 52 L 10 80 L 18 83 L 30 58 Z" fill="#d97706"/>
-  <circle cx="14" cy="85" r="5" fill="#d97706"/>
-  <path d="M 78 52 L 90 80 L 82 83 L 70 58 Z" fill="#d97706"/>
-  <circle cx="86" cy="85" r="5" fill="#d97706"/>
-  <!-- Pantalón corto -->
-  <rect x="32" y="92" width="16" height="24" fill="#f59e0b"/>
-  <rect x="52" y="92" width="16" height="24" fill="#f59e0b"/>
-  <!-- Piernas corpulentas -->
-  <rect x="35" y="116" width="10" height="12" fill="#d97706"/>
-  <rect x="55" y="116" width="10" height="12" fill="#d97706"/>
-  <!-- Botas -->
-  <rect x="30" y="128" width="16" height="7" fill="#78350f"/>
-  <rect x="54" y="128" width="16" height="7" fill="#78350f"/>
-</svg>`,
+Chad: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'><polygon points='34,18 66,18 66,30 58,45 50,48 42,45 34,30' fill='%23d97706'/><path d='M34 18C34 5 66 5 66 18Z' fill='%231c1917'/><line x1='40' y1='25' x2='46' y2='25' stroke='%23451a03' stroke-width='2'/><line x1='54' y1='25' x2='60' y2='25' stroke='%23451a03' stroke-width='2'/><path d='M46 40L50 43L54 40' stroke='%2378350f' stroke-width='1.5' fill='none'/><rect x='42' y='45' width='16' height='8' fill='%23d97706'/><path d='M22 52L78 52L68 92L32 92Z' fill='%23dc2626'/><path d='M38 60Q50 66 62 60' stroke='%23991b1b' stroke-width='2' fill='none'/><path d='M22 52L10 80L18 83L30 58Z' fill='%23d97706'/><circle cx='14' cy='85' r='5' fill='%23d97706'/><path d='M78 52L90 80L82 83L70 58Z' fill='%23d97706'/><circle cx='86' cy='85' r='5' fill='%23d97706'/><rect x='32' y='92' width='16' height='24' fill='%23f59e0b'/><rect x='52' y='92' width='16' height='24' fill='%23f59e0b'/><rect x='35' y='116' width='10' height='12' fill='%23d97706'/><rect x='55' y='116' width='10' height='12' fill='%23d97706'/><rect x='30' y='128' width='16' height='7' fill='%2378350f'/><rect x='54' y='128' width='16' height='7' fill='%2378350f'/></svg>",
 
-Master: `
-<svg viewBox="0 0 100 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-  <!-- Corona Mística -->
-  <polygon points="38,12 43,2 50,10 57,2 62,12" fill="#fde047"/>
-  <!-- Aura de energía detrás -->
-  <circle cx="50" cy="40" r="32" fill="rgba(168,85,247,0.3)"/>
-  <!-- Cabeza de Dios Místico -->
-  <ellipse cx="50" cy="28" rx="13" ry="15" fill="#c084fc"/>
-  <!-- Ojos brillantes de poder -->
-  <ellipse cx="45" cy="26" rx="3" ry="2" fill="#fff"/>
-  <ellipse cx="55" cy="26" rx="3" ry="2" fill="#fff"/>
-  <!-- Túnica mística cósmica -->
-  <path d="M 26 42 L 74 42 L 80 125 L 20 125 Z" fill="#581c87"/>
-  <!-- Detalle dorado de la túnica -->
-  <path d="M 50 42 L 50 125" stroke="#fde047" stroke-width="3"/>
-  <path d="M 26 42 L 50 70 L 74 42" fill="none" stroke="#fde047" stroke-width="2"/>
-  <!-- Mangas anchas místicas -->
-  <path d="M 26 42 L 10 75 L 22 80 L 32 55 Z" fill="#6b21a8"/>
-  <circle cx="16" cy="80" r="5" fill="#fde047"/>
-  <path d="M 74 42 L 90 75 L 78 80 L 68 55 Z" fill="#6b21a8"/>
-  <circle cx="84" cy="80" r="5" fill="#fde047"/>
-  <!-- Calzado dorado que flota -->
-  <ellipse cx="38" cy="128" rx="10" ry="4" fill="#fde047"/>
-  <ellipse cx="62" cy="128" rx="10" ry="4" fill="#fde047"/>
-</svg>`
+Master: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'><polygon points='38,12 43,2 50,10 57,2 62,12' fill='%23fde047'/><circle cx='50' cy='40' r='32' fill='rgba(168,85,247,0.3)'/><ellipse cx='50' cy='28' rx='13' ry='15' fill='%23c084fc'/><ellipse cx='45' cy='26' rx='3' ry='2' fill='%23fff'/><ellipse cx='55' cy='26' rx='3' ry='2' fill='%23fff'/><path d='M26 42L74 42L80 125L20 125Z' fill='%23581c87'/><path d='M50 42L50 125' stroke='%23fde047' stroke-width='3'/><path d='M26 42L50 70L74 42' fill='none' stroke='%23fde047' stroke-width='2'/><path d='M26 42L10 75L22 80L32 55Z' fill='%236b21a8'/><circle cx='16' cy='80' r='5' fill='%23fde047'/><path d='M74 42L90 75L78 80L68 55Z' fill='%236b21a8'/><circle cx='84' cy='80' r='5' fill='%23fde047'/><ellipse cx='38' cy='128' rx='10' ry='4' fill='%23fde047'/><ellipse cx='62' cy='128' rx='10' ry='4' fill='%23fde047'/></svg>"
 };
 
 const charConfigs = {
@@ -428,10 +317,10 @@ function powerCost(){ return Math.floor(100*Math.pow(2.4,power)); }
 function botCost(){ return Math.floor(250*Math.pow(2.7,bot)); }
 
 function updateCharacter(){
-  const svg = charSvgData[character] || charSvgData.NPC;
+  const imgSrc = charImages[character] || charImages.NPC;
   const cfg = charConfigs[character] || charConfigs.NPC;
   
-  $("avatarSvg").innerHTML = svg;
+  $("avatarImg").src = imgSrc;
   $("avatarTitle").textContent = cfg.name;
 }
 
@@ -492,4 +381,61 @@ function render(){
   document.querySelectorAll("[data-char]").forEach(b=>{
     b.classList.toggle("active", b.dataset.char===character);
   });
-  document.querySelectorAll("[
+  document.querySelectorAll("[data-zone]").forEach(b=>{
+    b.classList.toggle("active", b.dataset.zone===zone);
+  });
+
+  updateTheme();
+  save();
+}
+
+function log(msg){
+  const item=document.createElement("div");
+  item.textContent=msg;
+  $("log").prepend(item);
+  while($("log").children.length>12){ $("log").lastChild.remove(); }
+}
+
+function pop(msg){
+  const item=document.createElement("div");
+  item.className="pop";
+  item.textContent=msg;
+  item.style.left=innerWidth/2+"px";
+  item.style.top=innerHeight/2+"px";
+  document.body.appendChild(item);
+  setTimeout(()=>{ item.remove(); },700);
+}
+
+function animateCharacter(){
+  const box=$("avatarBox");
+  box.classList.remove("anim-bounce");
+  void box.offsetWidth;
+  box.classList.add("anim-bounce");
+}
+
+function checkAwakening(){
+  if(presence>=100 && awakenedTimer===0){
+    awakenedTimer=15;
+    const box=$("avatarBox");
+    box.classList.remove("anim-bounce");
+    void box.offsetWidth;
+    box.classList.add("anim-awaken");
+    log("🔥 ¡HAS DESPERTADO! Poder x5 durante 15 segundos.");
+    pop("🔥 ¡DESPERTAR!");
+  }
+}
+
+function farm(){
+  const gain=clickPower();
+  aura+=gain;
+  presence=Math.min(100,presence+.04);
+  animateCharacter();
+  pop("+"+fmt(gain)+" AURA");
+
+  if(Math.random()<.06) eventTrigger();
+  checkAwakening();
+  render();
+}
+
+function eventTrigger(){
+  if(Math.random
